@@ -746,3 +746,9 @@ section { padding: 120px 0; }
 .wa-float:hover { transform: scale(1.08); box-shadow: 0 14px 34px rgba(0,0,0,0.4); }
 .wa-float svg { width: 30px; height: 30px; }
 @media (max-width: 980px) { .wa-float { bottom: 92px; right: 14px; width: 52px; height: 52px; } }
+
+/* Logo met naam (wordmark) naast het symbool */
+.logo .logo-wordmark { height: 50px; width: auto; }
+.site-header.scrolled .logo .logo-wordmark { height: 42px; }
+.footer-brand .logo .logo-wordmark { height: 56px; }
+@media (max-width: 480px) { .logo .logo-wordmark { height: 38px; } .site-header.scrolled .logo .logo-wordmark { height: 34px; } .logo img:not(.logo-wordmark) { height: 38px; width: auto; } }
