@@ -240,3 +240,5 @@ detailpagina's en de sitemap. Dit draait volledig in GitHub Actions
 - Handmatig starten: GitHub, tabblad Actions, "Marktplaats synchroniseren", Run workflow.
 - Lokaal testen: `node scripts/sync-marktplaats.mjs`, daarna `scripts\Generate-Occasions.ps1`.
 - Publiceren gaat via Cloudflare Pages, gekoppeld aan de GitHub-repository. Elke wijziging in de repository wordt automatisch gepubliceerd.
+
+Koppeling Netlify met GitHub getest op 26-10-2026.
