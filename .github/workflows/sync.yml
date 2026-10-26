@@ -2,7 +2,7 @@ name: Marktplaats synchroniseren
 
 on:
   schedule:
-    - cron: "17 * * * *"   # elk uur, op minuut 17
+    - cron: "*/10 * * * *"   # elke 10 minuten (GitHub kan dit bij drukte iets uitstellen)
   workflow_dispatch:         # handmatig starten via het tabblad Actions
 
 permissions:
