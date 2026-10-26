@@ -238,19 +238,25 @@ de laptop hoeft niet aan te staan.
 - Is Marktplaats even onbereikbaar of geblokkeerd, dan blijft de site ongewijzigd (er verschijnt een waarschuwing bij de Actions-run).
 - Handmatig starten: GitHub, tabblad Actions, "Marktplaats synchroniseren", Run workflow.
 
-### Waarom kost dit geen Netlify-credits
+### Hoe de site online komt (GitHub Pages)
 
-De website zelf (ontwerp en pagina's) staat op Netlify. De voorraad en de foto's lezen de pagina's live uit deze GitHub-repository
-(`raw.githubusercontent.com`, zie `js/vehicles.js`). Een voorraadwijziging is dus alleen een wijziging in GitHub en
-`netlify.toml` zorgt dat Netlify daarvoor niet opnieuw publiceert. Alleen een wijziging aan het ontwerp of de pagina's
-leidt tot een nieuwe publicatie (15 credits op het gratis plan).
+De site wordt gratis gepubliceerd door GitHub Pages, zonder limiet op het aantal publicaties.
 
-Alle auto's gebruiken dezelfde pagina: `occasion.html` (`js/occasion.js`), bereikbaar als `/occasions/<slug>/`.
-De repository moet openbaar blijven, anders kan de site de voorraad niet lezen.
+- `.github/workflows/sync.yml`: elke 10 minuten de voorraad van Marktplaats ophalen. Is er iets veranderd, dan wordt de site direct opnieuw gepubliceerd.
+- `.github/workflows/deploy.yml`: bouwt de site (`scripts/build-site.mjs`) en zet hem online. Draait ook bij elke wijziging op `main` en handmatig (tabblad Actions).
+- `scripts/build-site.mjs` maakt voor elke auto een eigen pagina `/occasions/<slug>/` (alle auto's gebruiken `occasion.html` en `js/occasion.js`).
+- Het domein altenaautos.nl blijft bij mijndomein.nl: de DNS-regels wijzen naar GitHub Pages (zie hieronder).
+
+DNS bij mijndomein.nl voor GitHub Pages:
+- `A`-records voor altenaautos.nl: 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153
+- `CNAME` voor www: davidmulder8-oss.github.io
+- Laat de MX- en TXT-regels (e-mail) staan.
+
+`netlify.toml` stamt uit de periode op Netlify en wordt niet meer gebruikt.
 
 ### Lokaal bekijken
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File _devserver.ps1
 ```
-Opent de site op `http://localhost:8183` en gebruikt dan de bestanden uit deze map.
+Opent de site op `http://localhost:8183` met de bestanden uit deze map. `node scripts/build-site.mjs` bouwt de definitieve versie in `_site/`.

@@ -1,0 +1,47 @@
+name: Site publiceren
+
+# Bouwt de site (scripts/build-site.mjs) en zet hem online via GitHub Pages.
+# Draait bij elke wijziging op main, handmatig, en na elke Marktplaats-synchronisatie die iets veranderde.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Site bouwen
+        run: node scripts/build-site.mjs
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Online zetten
+        id: deployment
+        uses: actions/deploy-pages@v4

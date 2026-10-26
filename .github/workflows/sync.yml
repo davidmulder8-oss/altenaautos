@@ -15,6 +15,8 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.save.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
 
@@ -25,14 +27,27 @@ jobs:
       - name: Voorraad van Marktplaats ophalen
         run: node scripts/sync-marktplaats.mjs
 
-      - name: Wijzigingen publiceren
+      - name: Wijzigingen opslaan
+        id: save
         run: |
           git config user.name "Altena sync"
           git config user.email "sync@users.noreply.github.com"
           git add -A
           if git diff --cached --quiet; then
-            echo "Niets te publiceren."
+            echo "Niets veranderd."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "Voorraad bijgewerkt vanuit Marktplaats"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+
+  # Alleen als er echt iets veranderde (nieuwe auto, prijs, verkocht) wordt de site opnieuw online gezet
+  publish:
+    needs: sync
+    if: needs.sync.outputs.changed == 'true'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/deploy.yml

@@ -54,7 +54,7 @@
     const setMeta = (sel, attr, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, val); };
     setMeta('meta[name="description"]', "content", metaDesc);
     setMeta('link[rel="canonical"]', "href", url);
-    const addMeta = (prop, val) => { const m = document.createElement("meta"); m.setAttribute("property", prop); m.setAttribute("content", val); document.head.appendChild(m); };
+    const addMeta = (prop, val) => { let m = document.querySelector('meta[property="' + prop + '"]'); if (!m) { m = document.createElement("meta"); m.setAttribute("property", prop); document.head.appendChild(m); } m.setAttribute("content", val); };
     addMeta("og:title", pageTitle); addMeta("og:description", metaDesc); addMeta("og:url", url);
     if (firstImage) addMeta("og:image", firstImage);
 

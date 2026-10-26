@@ -4,30 +4,17 @@
    leest uit hetzelfde centrale bestand: /data/vehicles.json
    ========================================================= */
 
-// Live (altenaautos.nl) komen voorraad en foto's rechtstreeks uit GitHub, waar de
-// Marktplaats-synchronisatie ze elke 10 minuten bijwerkt. De site zelf hoeft dus
-// niet opnieuw gepubliceerd te worden als er een auto bijkomt of verdwijnt.
-// Lokaal (localhost) worden gewoon de bestanden uit deze map gebruikt.
-const STOCK_RAW_BASE = "https://raw.githubusercontent.com/davidmulder8-oss/altenaautos/main/";
-const IS_LOCAL = ["localhost", "127.0.0.1", "[::1]", ""].includes(window.location.hostname);
-const ASSET_BASE = IS_LOCAL ? "/" : STOCK_RAW_BASE;
-
+// De voorraad (data/vehicles.json) en de foto's staan op dezelfde site. GitHub haalt elke
+// 10 minuten de voorraad van Marktplaats op en publiceert de site daarna opnieuw.
 function assetUrl(path) {
-  return /^https?:/.test(path) ? path : ASSET_BASE + String(path).replace(/^\/+/, "");
+  return /^https?:/.test(path) ? path : "/" + String(path).replace(/^\/+/, "");
 }
 
 async function loadVehicles() {
-  // Bij problemen met GitHub valt de site terug op de laatst gepubliceerde voorraad.
-  const urls = IS_LOCAL ? ["/data/vehicles.json"] : [assetUrl("data/vehicles.json"), "/data/vehicles.json"];
-  for (const url of urls) {
-    try {
-      const res = await fetch(url, { cache: "no-cache" });
-      if (res.ok) return (await res.json()).vehicles;
-    } catch (e) { /* volgende bron proberen */ }
-  }
-  throw new Error("Kon voorraaddata niet laden");
+  const res = await fetch("/data/vehicles.json", { cache: "no-cache" });
+  if (!res.ok) throw new Error("Kon voorraaddata niet laden: " + res.status);
+  return (await res.json()).vehicles;
 }
-
 const icons = {
   calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>',
   gauge: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 13l4-4M12 5v1M4 13H3M21 13h-1M6.3 6.3l.7.7M17.7 6.3l-.7.7"/></svg>',

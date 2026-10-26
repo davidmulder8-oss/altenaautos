@@ -1,4 +1,4 @@
-﻿.claude/
-
-# Local Netlify folder
-.netlify
+.claude/
+.netlify/
+_site/
+node_modules/
