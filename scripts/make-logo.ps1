@@ -15,7 +15,8 @@
   daaruit zo goed mogelijk herbouwd.
 #>
 param(
-  [string]$Source = "C:\Users\Gebruiker\Downloads\WhatsApp Image 2026-10-26 at 16.55.31.jpeg"
+  [string]$Source = "C:\Users\Gebruiker\Downloads\Neonoranje auto voor driehoekig embleem.png",
+  [switch]$Legacy   # alleen voor het oude, sterk gecomprimeerde JPEG-bestand
 )
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
@@ -75,6 +76,32 @@ public static class LogoMaker {
       double t=((x-s[0])*dx+(y-s[1])*dy)/len2; t=t<0?0:(t>1?1:t); double px=s[0]+t*dx-x, py=s[1]+t*dy-y; double d=Math.Sqrt(px*px+py*py);
       float v=(float)Math.Max(0,Math.Min(1,hw+0.7-d)); if(v>a[y*w+x]) a[y*w+x]=v; }
   }
+  // Schone bron (oranje lijnen op zwart): helderheid wordt de dekking, kleur wordt het merkoranje
+  public static void MakeClean(string src, string dst, int dilate, int blur, int pad, int maxSide, int r, int g, int bl) {
+    int w,h; float[] a;
+    using (var b = new Bitmap(src)) {
+      w=b.Width; h=b.Height; var rect0=new Rectangle(0,0,w,h);
+      var d0=b.LockBits(rect0, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+      int n=Math.Abs(d0.Stride)*h; var raw=new byte[n]; Marshal.Copy(d0.Scan0,raw,0,n); b.UnlockBits(d0);
+      a=new float[w*h];
+      for(int y=0;y<h;y++) for(int x=0;x<w;x++){ int i=y*d0.Stride+x*4; float v=Math.Max(raw[i],Math.Max(raw[i+1],raw[i+2]))/255f; float s=(v-0.28f)/0.42f; a[y*w+x]=s<0?0:(s>1?1:s); }
+    }
+    a=Dilate(a,w,h,dilate); if(blur>0){ a=Blur(a,w,h,blur); for(int i=0;i<a.Length;i++){ float v=(a[i]-0.25f)/0.4f; a[i]=v<0?0:(v>1?1:v); } }
+    int minx=w,miny=h,maxx=0,maxy=0;
+    for(int y=0;y<h;y++) for(int x=0;x<w;x++) if(a[y*w+x]>0.5f){ if(x<minx)minx=x; if(x>maxx)maxx=x; if(y<miny)miny=y; if(y>maxy)maxy=y; }
+    int cw=maxx-minx+1+2*pad, ch=maxy-miny+1+2*pad;
+    using (var big=new Bitmap(cw,ch,PixelFormat.Format32bppArgb)) {
+      var rect=new Rectangle(0,0,cw,ch); var d=big.LockBits(rect,ImageLockMode.WriteOnly,PixelFormat.Format32bppArgb);
+      var buf=new byte[Math.Abs(d.Stride)*ch];
+      for(int y=0;y<ch;y++) for(int x=0;x<cw;x++){ int sx=x+minx-pad, sy=y+miny-pad; float v=(sx>=0&&sx<w&&sy>=0&&sy<h)?a[sy*w+sx]:0; int i=y*d.Stride+x*4; buf[i]=(byte)bl; buf[i+1]=(byte)g; buf[i+2]=(byte)r; buf[i+3]=(byte)(v*255); }
+      Marshal.Copy(buf,0,d.Scan0,buf.Length); big.UnlockBits(d);
+      double sc=Math.Min(1.0,(double)maxSide/Math.Max(cw,ch)); int nw=(int)(cw*sc), nh=(int)(ch*sc);
+      using (var o=new Bitmap(nw,nh,PixelFormat.Format32bppArgb)) using (var gr=Graphics.FromImage(o)) {
+        gr.InterpolationMode=System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic; gr.SmoothingMode=System.Drawing.Drawing2D.SmoothingMode.HighQuality; gr.PixelOffsetMode=System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+        gr.DrawImage(big,0,0,nw,nh); o.Save(dst,ImageFormat.Png);
+      }
+    }
+  }
   public static void Make(string src, string dst, int dilate, int blur, int pad, int maxSide, int r, int g, int bl, double lineHalf) {
     int w,h; var a=Load(src,out w,out h); int w2,h2; var raw=Load(src,out w2,out h2);
     // stippen buiten de auto weghalen, die vervangen we door rechte lijnen
@@ -113,8 +140,13 @@ $logoDir = Join-Path $root "images\logo"; $genDir = Join-Path $root "images\gene
 New-Item -ItemType Directory -Force -Path $logoDir, $genDir | Out-Null
 
 # 1. Het logo zelf (oranje op transparant)
-[LogoMaker]::Make($Source, (Join-Path $logoDir "symbol.png"),       2, 2, 40, 700, 236,102,8, 4.5)
-[LogoMaker]::Make($Source, (Join-Path $logoDir "symbol-large.png"), 1, 1, 30, 1400, 236,102,8, 2.5)
+if($Legacy){
+  [LogoMaker]::Make($Source, (Join-Path $logoDir "symbol.png"),       2, 2, 40, 700, 236,102,8, 4.5)
+  [LogoMaker]::Make($Source, (Join-Path $logoDir "symbol-large.png"), 1, 1, 30, 1400, 236,102,8, 2.5)
+} else {
+  [LogoMaker]::MakeClean($Source, (Join-Path $logoDir "symbol.png"),       2, 1, 24, 700, 236,102,8)
+  [LogoMaker]::MakeClean($Source, (Join-Path $logoDir "symbol-large.png"), 0, 1, 24, 1400, 236,102,8)
+}
 $sym = [System.Drawing.Image]::FromFile((Join-Path $logoDir "symbol.png"))
 $symL = [System.Drawing.Image]::FromFile((Join-Path $logoDir "symbol-large.png"))
 
