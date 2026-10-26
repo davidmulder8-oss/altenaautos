@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alle occasions | Altena Auto's</title>
+<meta name="description" content="Bekijk alle occasions van Altena Auto's in 's-Hertogenbosch. Filter op merk, prijs, bouwjaar, kilometerstand, brandstof en meer.">
+<link rel="canonical" href="https://www.altenaautos.nl/occasions">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Altena Auto's">
+<meta property="og:title" content="Alle occasions | Altena Auto's">
+<meta property="og:description" content="Bekijk de volledige voorraad occasions van Altena Auto's, met filters op merk, prijs, bouwjaar en meer.">
+<meta property="og:url" content="https://www.altenaautos.nl/occasions">
+<meta property="og:locale" content="nl_NL">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23EC6608'/%3E%3Cpath d='M14 38l3-9a4 4 0 0 1 3.8-3h22.4a4 4 0 0 1 3.8 3l3 9' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Crect x='11' y='38' width='42' height='13' rx='4' fill='white'/%3E%3Ccircle cx='20' cy='51' r='4' fill='%23EC6608'/%3E%3Ccircle cx='44' cy='51' r='4' fill='%23EC6608'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#14181D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Naar hoofdinhoud</a>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo" aria-label="Altena Auto's, home">
+      <img src="images/logo/logo.png" alt="Altena Auto's" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+      <span class="logo-fallback">Altena&nbsp;<em>auto's<span class="bang">!</span></em></span>
+    </a>
+    <nav class="main-nav" id="main-nav" aria-label="Hoofdnavigatie">
+      <a href="index.html">Home</a>
+      <a href="occasions.html" aria-current="page">Occasions</a>
+      <a href="over-ons.html">Over ons</a>
+      <a href="inruilen.html">Inruilen</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="occasions.html" class="btn btn-primary"><span class="btn-label">Bekijk occasions</span></a>
+      <button class="nav-toggle" aria-label="Menu openen" aria-expanded="false" aria-controls="main-nav"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-hero">
+    <div class="container">
+      <div class="breadcrumbs"><a href="index.html">Home</a><span>/</span><span aria-current="page">Occasions</span></div>
+      <h1>Alle occasions</h1>
+      <p>Onze volledige voorraad, direct doorzoekbaar. Gebruik de filters om snel de auto te vinden die bij je past.</p>
+    </div>
+  </div>
+
+  <section style="padding-top:48px;">
+    <div class="container">
+      <button class="btn btn-outline filter-toggle-btn" id="filter-toggle" aria-expanded="false" aria-controls="filters-panel">Filters</button>
+
+      <div class="stock-layout">
+        <aside class="filters-panel" id="filters-panel" aria-label="Filters">
+          <div class="filters-panel-close">
+            <button class="btn btn-sm btn-outline" id="filters-close">Sluiten ✕</button>
+          </div>
+          <h2>Filters</h2>
+          <p class="filters-count" id="filters-count">— resultaten</p>
+
+          <form id="filter-form">
+            <div class="filter-group">
+              <label for="f-brand">Merk</label>
+              <select id="f-brand" name="brand"><option value="">Alle merken</option></select>
+            </div>
+            <div class="filter-group">
+              <label for="f-model">Model</label>
+              <select id="f-model" name="model"><option value="">Alle modellen</option></select>
+            </div>
+            <div class="filter-group">
+              <label>Prijs (€)</label>
+              <div class="filter-row">
+                <input type="number" name="priceMin" placeholder="Min" min="0" step="500">
+                <input type="number" name="priceMax" placeholder="Max" min="0" step="500">
+              </div>
+            </div>
+            <div class="filter-group">
+              <label>Bouwjaar</label>
+              <div class="filter-row">
+                <input type="number" name="yearMin" placeholder="Vanaf" min="1980" max="2030">
+                <input type="number" name="yearMax" placeholder="Tot" min="1980" max="2030">
+              </div>
+            </div>
+            <div class="filter-group">
+              <label for="f-mileage">Kilometerstand tot</label>
+              <select id="f-mileage" name="mileageMax">
+                <option value="">Geen maximum</option>
+                <option value="50000">50.000 km</option>
+                <option value="100000">100.000 km</option>
+                <option value="150000">150.000 km</option>
+                <option value="200000">200.000 km</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="f-fuel">Brandstof</label>
+              <select id="f-fuel" name="fuel"><option value="">Alle brandstoffen</option></select>
+            </div>
+            <div class="filter-group">
+              <label for="f-transmission">Transmissie</label>
+              <select id="f-transmission" name="transmission"><option value="">Alle transmissies</option></select>
+            </div>
+            <div class="filter-group">
+              <label for="f-body">Carrosserie</label>
+              <select id="f-body" name="bodyType"><option value="">Alle carrosserietypen</option></select>
+            </div>
+            <button type="button" id="filters-reset" class="btn btn-outline btn-block">Filters wissen</button>
+          </form>
+        </aside>
+
+        <div>
+          <div class="stock-toolbar">
+            <p class="result-count"><span id="result-count">—</span> occasions gevonden</p>
+            <div class="sort-control">
+              <label for="sort-select" class="visually-hidden">Sorteer op</label>
+              <select id="sort-select">
+                <option value="newest">Sorteer op: Nieuwste</option>
+                <option value="price-asc">Prijs laag → hoog</option>
+                <option value="price-desc">Prijs hoog → laag</option>
+                <option value="mileage-asc">Kilometerstand</option>
+              </select>
+            </div>
+          </div>
+          <div class="occasion-grid" id="occasion-grid">
+            <p>Occasions worden geladen…</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <a href="index.html" class="logo" aria-label="Altena Auto's, home">
+          <img src="images/logo/logo.png" alt="Altena Auto's" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
+          <span class="logo-fallback">Altena&nbsp;<em>auto's<span class="bang">!</span></em></span>
+        </a>
+        <p>Betrouwbare occasions en persoonlijk advies in 's-Hertogenbosch. Kom langs voor een bezichtiging op afspraak.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigatie</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="occasions.html">Occasions</a></li>
+          <li><a href="over-ons.html">Over ons</a></li>
+          <li><a href="inruilen.html">Inruilen</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+31621816055">06 - 218 16 055</a></li>
+          <li><a href="mailto:info@altenaautos.nl">info@altenaautos.nl</a></li>
+          <li>Uilenwaard 44<br>5236 WB 's-Hertogenbosch</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Elders</h4>
+        <ul>
+          <li><a href="https://www.marktplaats.nl/u/altena-auto-s/248670/" target="_blank" rel="noopener">Marktplaats-profiel</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="footer-year"></span> Altena Auto's</span>
+      <span>Uilenwaard 44, 5236 WB 's-Hertogenbosch</span>
+    </div>
+  </div>
+</footer>
+
+<div class="mobile-cta-bar">
+  <a href="tel:+31621816055" class="btn btn-outline">Bel direct</a>
+  <a href="contact.html" class="btn btn-primary">Neem contact op</a>
+</div>
+
+<script src="js/vehicles.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.getElementById("footer-year").textContent = new Date().getFullYear();
+
+(async function () {
+  const grid = document.getElementById("occasion-grid");
+  const resultCount = document.getElementById("result-count");
+  const filtersCount = document.getElementById("filters-count");
+  const form = document.getElementById("filter-form");
+  const sortSelect = document.getElementById("sort-select");
+
+  let vehicles = [];
+  try {
+    vehicles = await AltenaVehicles.loadVehicles();
+  } catch (e) {
+    grid.innerHTML = "<p>Voorraad kon niet worden geladen. Probeer het later opnieuw of neem contact op.</p>";
+    console.error(e);
+    return;
+  }
+
+  function uniqueSorted(arr) { return [...new Set(arr.filter(Boolean))].sort((a, b) => a.localeCompare(b, "nl")); }
+  function fillSelect(select, values) {
+    values.forEach((v) => {
+      const opt = document.createElement("option");
+      opt.value = v; opt.textContent = v;
+      select.appendChild(opt);
+    });
+  }
+  fillSelect(document.getElementById("f-brand"), uniqueSorted(vehicles.map(v => v.brand)));
+  fillSelect(document.getElementById("f-fuel"), uniqueSorted(vehicles.map(v => v.fuel)));
+  fillSelect(document.getElementById("f-transmission"), uniqueSorted(vehicles.map(v => v.transmission)));
+  fillSelect(document.getElementById("f-body"), uniqueSorted(vehicles.map(v => v.bodyType)));
+
+  function updateModelOptions(brand) {
+    const modelSelect = document.getElementById("f-model");
+    modelSelect.innerHTML = '<option value="">Alle modellen</option>';
+    const models = uniqueSorted(vehicles.filter(v => !brand || v.brand === brand).map(v => v.model));
+    fillSelect(modelSelect, models);
+  }
+  updateModelOptions("");
+  document.getElementById("f-brand").addEventListener("change", (e) => updateModelOptions(e.target.value));
+
+  function applyFiltersAndSort() {
+    const fd = new FormData(form);
+    const brand = fd.get("brand"), model = fd.get("model"), fuel = fd.get("fuel");
+    const transmission = fd.get("transmission"), bodyType = fd.get("bodyType");
+    const priceMin = parseFloat(fd.get("priceMin")), priceMax = parseFloat(fd.get("priceMax"));
+    const yearMin = parseFloat(fd.get("yearMin")), yearMax = parseFloat(fd.get("yearMax"));
+    const mileageMax = parseFloat(fd.get("mileageMax"));
+
+    let result = vehicles.filter((v) => {
+      if (brand && v.brand !== brand) return false;
+      if (model && v.model !== model) return false;
+      if (fuel && v.fuel !== fuel) return false;
+      if (transmission && v.transmission !== transmission) return false;
+      if (bodyType && v.bodyType !== bodyType) return false;
+      if (!isNaN(priceMin) && (v.price == null || v.price < priceMin)) return false;
+      if (!isNaN(priceMax) && (v.price == null || v.price > priceMax)) return false;
+      if (!isNaN(yearMin) && v.year < yearMin) return false;
+      if (!isNaN(yearMax) && v.year > yearMax) return false;
+      if (!isNaN(mileageMax) && v.mileage > mileageMax) return false;
+      return true;
+    });
+
+    switch (sortSelect.value) {
+      case "price-asc": result.sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity)); break;
+      case "price-desc": result.sort((a, b) => (b.price ?? -Infinity) - (a.price ?? -Infinity)); break;
+      case "mileage-asc": result.sort((a, b) => a.mileage - b.mileage); break;
+      default: result.sort((a, b) => new Date(b.listedSince || 0) - new Date(a.listedSince || 0));
+    }
+
+    // Verkochte auto's altijd onderaan
+    result.sort((a, b) => (a.status === "verkocht") - (b.status === "verkocht"));
+
+    resultCount.textContent = result.length;
+    filtersCount.textContent = result.length + " van " + vehicles.length + " resultaten";
+
+    grid.innerHTML = result.length
+      ? result.map(v => AltenaVehicles.occasionCardHTML(v)).join("")
+      : '<div class="empty-state"><h3>Geen occasions gevonden</h3><p>Pas je filters aan of <a href="contact.html">neem contact op</a>. Misschien kunnen we de auto voor je vinden.</p></div>';
+    AltenaVehicles.renderReveal();
+  }
+
+  form.addEventListener("input", applyFiltersAndSort);
+  form.addEventListener("change", applyFiltersAndSort);
+  sortSelect.addEventListener("change", applyFiltersAndSort);
+  document.getElementById("filters-reset").addEventListener("click", () => {
+    form.reset(); updateModelOptions(""); applyFiltersAndSort();
+  });
+
+  applyFiltersAndSort();
+
+  // Mobiele filter-drawer
+  const panel = document.getElementById("filters-panel");
+  const toggleBtn = document.getElementById("filter-toggle");
+  const closeBtn = document.getElementById("filters-close");
+  toggleBtn.addEventListener("click", () => {
+    panel.classList.add("open"); toggleBtn.setAttribute("aria-expanded", "true");
+  });
+  closeBtn.addEventListener("click", () => {
+    panel.classList.remove("open"); toggleBtn.setAttribute("aria-expanded", "false");
+  });
+})();
+</script>
+</body>
+</html>

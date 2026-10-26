@@ -1,0 +1,42 @@
+name: Marktplaats synchroniseren
+
+on:
+  schedule:
+    - cron: "17 * * * *"   # elk uur, op minuut 17
+  workflow_dispatch:         # handmatig starten via het tabblad Actions
+
+permissions:
+  contents: write
+
+concurrency:
+  group: marktplaats-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Voorraad van Marktplaats ophalen
+        run: node scripts/sync-marktplaats.mjs
+
+      - name: Detailpagina's en sitemap opnieuw genereren
+        shell: pwsh
+        run: ./scripts/Generate-Occasions.ps1
+
+      - name: Wijzigingen publiceren
+        run: |
+          git config user.name "Altena sync"
+          git config user.email "sync@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Niets te publiceren."
+          else
+            git commit -m "Voorraad bijgewerkt vanuit Marktplaats"
+            git push
+          fi
