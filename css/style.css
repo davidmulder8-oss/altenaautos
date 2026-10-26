@@ -793,7 +793,7 @@ section { padding: 120px 0; }
 /* Lichtvlek in de hero */
 .hero-spot {
   position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 0.5s;
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(236,102,8,0.20), transparent 62%);
+  background: radial-gradient(200px circle at var(--mx, 50%) var(--my, 50%), rgba(236,102,8,0.13), transparent 70%);
 }
 
 /* Kaarten die meekantelen met een glans */
