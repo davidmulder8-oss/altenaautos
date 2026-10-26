@@ -6,7 +6,7 @@
    ========================================================= */
 
 (async function () {
-  const SITE = "https://www.altenaautos.nl";
+  const SITE = "https://altenaautos.nl";
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const nl = (n) => new Intl.NumberFormat("nl-NL").format(n);
@@ -76,6 +76,19 @@
     script.type = "application/ld+json";
     script.textContent = JSON.stringify(ld);
     document.head.appendChild(script);
+
+    // Kruimelpad voor Google: Home > Occasions > deze auto
+    const crumbLd = document.createElement("script");
+    crumbLd.type = "application/ld+json";
+    crumbLd.textContent = JSON.stringify({
+      "@context": "https://schema.org", "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE + "/" },
+        { "@type": "ListItem", position: 2, name: "Occasions", item: SITE + "/occasions" },
+        { "@type": "ListItem", position: 3, name: `${v.brand} ${v.model}`, item: url },
+      ],
+    });
+    document.head.appendChild(crumbLd);
 
     // Broodkruimel en zijbalk
     $("crumb").textContent = `${v.brand} ${v.model}`;

@@ -310,6 +310,11 @@ async function main() {
     }
   }
 
+  // Sitemap met alle auto's voor Google (door Netlify doorgegeven als /sitemap-occasions.xml)
+  const urls = vehicles.filter((v) => v.status !== "verkocht").map((v) => `  <url><loc>https://altenaautos.nl/occasions/${v.slug}/</loc></url>`);
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
+  await writeFile(path.join(ROOT, "sitemap-occasions.xml"), sitemap, "utf8");
+
   if (log.length) file.lastSynced = today(); // geen wijzigingen = geen commit = geen nieuwe deploy
   await writeFile(DATA_FILE, JSON.stringify(file, null, 2) + "\n", "utf8");
   console.log(log.length ? log.join("\n") : "Geen wijzigingen op Marktplaats.");

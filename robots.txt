@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.altenaautos.nl/sitemap.xml
+Sitemap: https://altenaautos.nl/sitemap.xml
+Sitemap: https://altenaautos.nl/sitemap-occasions.xml

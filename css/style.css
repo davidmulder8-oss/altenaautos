@@ -188,7 +188,7 @@ section { padding: 120px 0; }
 .logo img { height: 46px; width: auto; transition: height var(--dur-med); }
 .site-header.scrolled .logo img { height: 40px; }
 .logo-fallback {
-  display: none; align-items: baseline; gap: 4px;
+  display: inline-flex; align-items: baseline; gap: 4px;
   font-family: var(--font-display); font-weight: 700; font-size: 1.5rem;
   letter-spacing: 0; color: var(--color-white);
 }

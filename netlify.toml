@@ -23,6 +23,19 @@
   to = "/occasion.html"
   status = 200
 
+# Sitemap met alle auto's: wordt door de synchronisatie in GitHub bijgewerkt en hier doorgegeven
+[[redirects]]
+  from = "/sitemap-occasions.xml"
+  to = "https://raw.githubusercontent.com/davidmulder8-oss/altenaautos/main/sitemap-occasions.xml"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/sitemap-occasions.xml"
+  [headers.values]
+    Content-Type = "application/xml; charset=utf-8"
+    Cache-Control = "public, max-age=600"
+
 # Interne bestanden niet publiek tonen
 [[redirects]]
   from = "/scripts/*"
