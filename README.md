@@ -225,20 +225,32 @@ overgenomen, i.v.m. auteursrecht):
 5. Bij groei van de voorraad: overwegen een CSV-import of Marktplaats
    Pro/VMS-koppeling op te zetten (zie "Marktplaats-koppeling" hierboven).
 
-## Automatische Marktplaats-koppeling (sinds 26-10-2026)
+## Automatische Marktplaats-koppeling
 
-`scripts/sync-marktplaats.mjs` leest elk uur het Marktplaats-profiel van
+`scripts/sync-marktplaats.mjs` leest elke 10 minuten het Marktplaats-profiel van
 Altena Auto's (verkoper-id 248670) en werkt `data/vehicles.json` en de foto's
-in `images/cars/` bij. Daarna regenereert `Generate-Occasions.ps1` de
-detailpagina's en de sitemap. Dit draait volledig in GitHub Actions
-(`.github/workflows/sync.yml`), de laptop hoeft niet aan te staan.
+in `images/cars/` bij. Dit draait in GitHub Actions (`.github/workflows/sync.yml`),
+de laptop hoeft niet aan te staan.
 
-- Nieuwe advertentie op Marktplaats: auto staat binnen een uur op de site, met alle foto's en specificaties.
+- Nieuwe advertentie op Marktplaats: de auto staat binnen ongeveer 10 minuten op de site, met alle foto's en specificaties.
 - Prijs of "gereserveerd" wijzigt: wordt overgenomen.
-- Advertentie verdwijnt van Marktplaats: auto krijgt de status "verkocht", en blijft 60 dagen zichtbaar met een rode VERKOCHT-balk over de foto, en wordt daarna verwijderd.
+- Advertentie verdwijnt van Marktplaats: de auto krijgt de status "verkocht", blijft 60 dagen zichtbaar met een rode VERKOCHT-balk over de foto, en wordt daarna verwijderd.
 - Is Marktplaats even onbereikbaar of geblokkeerd, dan blijft de site ongewijzigd (er verschijnt een waarschuwing bij de Actions-run).
 - Handmatig starten: GitHub, tabblad Actions, "Marktplaats synchroniseren", Run workflow.
-- Lokaal testen: `node scripts/sync-marktplaats.mjs`, daarna `scripts\Generate-Occasions.ps1`.
-- Publiceren gaat via Cloudflare Pages, gekoppeld aan de GitHub-repository. Elke wijziging in de repository wordt automatisch gepubliceerd.
 
-Koppeling Netlify met GitHub getest op 26-10-2026.
+### Waarom kost dit geen Netlify-credits
+
+De website zelf (ontwerp en pagina's) staat op Netlify. De voorraad en de foto's lezen de pagina's live uit deze GitHub-repository
+(`raw.githubusercontent.com`, zie `js/vehicles.js`). Een voorraadwijziging is dus alleen een wijziging in GitHub en
+`netlify.toml` zorgt dat Netlify daarvoor niet opnieuw publiceert. Alleen een wijziging aan het ontwerp of de pagina's
+leidt tot een nieuwe publicatie (15 credits op het gratis plan).
+
+Alle auto's gebruiken dezelfde pagina: `occasion.html` (`js/occasion.js`), bereikbaar als `/occasions/<slug>/`.
+De repository moet openbaar blijven, anders kan de site de voorraad niet lezen.
+
+### Lokaal bekijken
+
+```powershell
+powershell -ExecutionPolicy Bypass -File _devserver.ps1
+```
+Opent de site op `http://localhost:8183` en gebruikt dan de bestanden uit deze map.

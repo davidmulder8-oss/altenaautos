@@ -25,10 +25,6 @@ jobs:
       - name: Voorraad van Marktplaats ophalen
         run: node scripts/sync-marktplaats.mjs
 
-      - name: Detailpagina's en sitemap opnieuw genereren
-        shell: pwsh
-        run: ./scripts/Generate-Occasions.ps1
-
       - name: Wijzigingen publiceren
         run: |
           git config user.name "Altena sync"

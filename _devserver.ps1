@@ -44,6 +44,9 @@ while ($listener.IsListening) {
       elseif (Test-Path (Join-Path $filePath "index.html") -PathType Leaf) { $filePath = Join-Path $filePath "index.html" }
     }
 
+    # /occasions/<slug>/ is op Netlify een rewrite naar occasion.html
+    if (-not (Test-Path $filePath -PathType Leaf) -and $path -match "^/occasions/[^/]+/?$") { $filePath = Join-Path $Root "occasion.html" }
+
     if (Test-Path $filePath -PathType Leaf) {
       $ext = [System.IO.Path]::GetExtension($filePath).ToLower()
       $contentType = $mime[$ext]

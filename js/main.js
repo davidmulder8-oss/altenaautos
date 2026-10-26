@@ -34,7 +34,7 @@
   const path = window.location.pathname.replace(/index\.html$/, "");
   document.querySelectorAll(".main-nav a[href]").forEach((a) => {
     const href = a.getAttribute("href").replace(/index\.html$/, "");
-    if (href && (path.endsWith(href) || (href !== "/" && path.includes(href)))) {
+    if (href && href !== "/" && (path.endsWith(href) || (href !== "/" && path.includes(href)))) {
       a.setAttribute("aria-current", "page");
     }
   });

@@ -1,15 +1,31 @@
 [build]
   publish = "."
+  # Publiceert NIET opnieuw als alleen de voorraad (data/ en images/cars/) is veranderd.
+  # De site leest de voorraad live uit GitHub, dus dat kost geen Netlify-credits.
+  # Exit 0 = overslaan, exit 1 = wel publiceren (ook als er nog geen vorige publicatie is).
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':!data' ':!images/cars'"
+
+# Alleen de hoofdbranch wordt gepubliceerd, previews en branch-deploys niet.
+[context.deploy-preview]
+  ignore = "exit 0"
+
+[context.branch-deploy]
+  ignore = "exit 0"
+
+# Eén pagina voor alle auto's: /occasions/<slug>/ laadt occasion.html
+[[redirects]]
+  from = "/occasions/:slug/"
+  to = "/occasion.html"
+  status = 200
+
+[[redirects]]
+  from = "/occasions/:slug"
+  to = "/occasion.html"
+  status = 200
 
 # Interne bestanden niet publiek tonen
 [[redirects]]
   from = "/scripts/*"
-  to = "/404.html"
-  status = 404
-  force = true
-
-[[redirects]]
-  from = "/templates/*"
   to = "/404.html"
   status = 404
   force = true

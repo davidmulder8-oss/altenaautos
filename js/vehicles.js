@@ -4,18 +4,28 @@
    leest uit hetzelfde centrale bestand: /data/vehicles.json
    ========================================================= */
 
-const VEHICLES_DATA_URL = (() => {
-  // Zorgt dat het pad klopt of het bestand nu in / of in /occasions/[slug]/ staat.
-  const depth = window.location.pathname.split("/").filter(Boolean);
-  const inOccasionDetail = depth.includes("occasions") && depth[depth.length - 1] !== "occasions.html" && depth[depth.length - 2] === "occasions";
-  return inOccasionDetail ? "../../data/vehicles.json" : "data/vehicles.json";
-})();
+// Live (altenaautos.nl) komen voorraad en foto's rechtstreeks uit GitHub, waar de
+// Marktplaats-synchronisatie ze elke 10 minuten bijwerkt. De site zelf hoeft dus
+// niet opnieuw gepubliceerd te worden als er een auto bijkomt of verdwijnt.
+// Lokaal (localhost) worden gewoon de bestanden uit deze map gebruikt.
+const STOCK_RAW_BASE = "https://raw.githubusercontent.com/davidmulder8-oss/altenaautos/main/";
+const IS_LOCAL = ["localhost", "127.0.0.1", "[::1]", ""].includes(window.location.hostname);
+const ASSET_BASE = IS_LOCAL ? "/" : STOCK_RAW_BASE;
+
+function assetUrl(path) {
+  return /^https?:/.test(path) ? path : ASSET_BASE + String(path).replace(/^\/+/, "");
+}
 
 async function loadVehicles() {
-  const res = await fetch(VEHICLES_DATA_URL);
-  if (!res.ok) throw new Error("Kon voorraaddata niet laden: " + res.status);
-  const json = await res.json();
-  return json.vehicles;
+  // Bij problemen met GitHub valt de site terug op de laatst gepubliceerde voorraad.
+  const urls = IS_LOCAL ? ["/data/vehicles.json"] : [assetUrl("data/vehicles.json"), "/data/vehicles.json"];
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, { cache: "no-cache" });
+      if (res.ok) return (await res.json()).vehicles;
+    } catch (e) { /* volgende bron proberen */ }
+  }
+  throw new Error("Kon voorraaddata niet laden");
 }
 
 const icons = {
@@ -48,7 +58,7 @@ function isNewListing(v) {
 
 function mediaBlock(v) {
   if (v.images && v.images.length > 0) {
-    return `<img src="${v.images[0]}" alt="${v.title}" loading="lazy" width="480" height="360">`;
+    return `<img src="${assetUrl(v.images[0])}" alt="${v.title}" loading="lazy" width="480" height="360">`;
   }
   return `<div class="media-placeholder">${icons.car}<span>Foto's volgen binnenkort</span></div>`;
 }
@@ -106,4 +116,4 @@ function renderReveal() {
   });
 }
 
-window.AltenaVehicles = { loadVehicles, occasionCardHTML, formatPrice, formatMileage, statusBadge, isNewListing, icons, renderReveal };
+window.AltenaVehicles = { loadVehicles, assetUrl, occasionCardHTML, formatPrice, formatMileage, statusBadge, isNewListing, icons, renderReveal };
