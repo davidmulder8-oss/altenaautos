@@ -328,21 +328,6 @@ window.AltenaForms = { wireMailtoForm };
 
   if (!canHover) return;
 
-  // 5. Lichtvlek die de muis volgt in de hero
-  const hero = document.querySelector(".hero");
-  if (hero) {
-    const spot = document.createElement("div");
-    spot.className = "hero-spot";
-    hero.appendChild(spot);
-    hero.addEventListener("pointermove", (e) => {
-      const r = hero.getBoundingClientRect();
-      spot.style.setProperty("--mx", (e.clientX - r.left) + "px");
-      spot.style.setProperty("--my", (e.clientY - r.top) + "px");
-      spot.style.opacity = "1";
-    });
-    hero.addEventListener("pointerleave", () => { spot.style.opacity = "0"; });
-  }
-
   // 6. Kaarten kantelen mee met de muis, met een glans
   function tilt(cardSel, targetSel, max) {
     let current = null;
