@@ -172,10 +172,10 @@ foreach ($v in $data.vehicles) {
     "@context" = "https://schema.org"
     "@type" = "Car"
     "name" = $v.title
-    "brand" = @{ "@type" = "Brand"; "name" = $v.brand }
+    "brand" = [ordered]@{ "@type" = "Brand"; "name" = $v.brand }
     "model" = $v.model
     "vehicleModelDate" = "$($v.year)"
-    "mileageFromOdometer" = @{ "@type" = "QuantitativeValue"; "value" = $v.mileage; "unitCode" = "KMT" }
+    "mileageFromOdometer" = [ordered]@{"@type" = "QuantitativeValue"; "value" = $v.mileage; "unitCode" = "KMT" }
     "fuelType" = $v.fuel
     "vehicleTransmission" = $v.transmission
     "color" = $v.color
@@ -185,12 +185,15 @@ foreach ($v in $data.vehicles) {
       "availability" = $availability
       "itemCondition" = "https://schema.org/UsedCondition"
       "url" = "$siteBaseUrl/occasions/$($v.slug)/"
-      "seller" = @{ "@type" = "AutoDealer"; "name" = "Altena Auto's"; "telephone" = "+31621816055" }
+      "seller" = [ordered]@{"@type" = "AutoDealer"; "name" = "Altena Auto's"; "telephone" = "+31621816055" }
     }
   }
   if (-not $v.priceOnRequest -and $v.price) { $ld.offers["price"] = $v.price }
   if ($v.images -and $v.images.Count -gt 0) { $ld["image"] = @($v.images | ForEach-Object { "$siteBaseUrl/$_" }) }
   $jsonLd = $ld | ConvertTo-Json -Depth 6 -Compress
+  # Windows PowerShell en PowerShell 7 escapen anders; normaliseren zodat de uitvoer overal identiek is
+  $bs = [string][char]92
+  $jsonLd = $jsonLd.Replace($bs + "u0027", "'").Replace($bs + "u0026", "&").Replace($bs + "u003c", "<").Replace($bs + "u003e", ">")
 
   # ---- Overige tokens ----
   $ogImage = if ($v.images -and $v.images.Count -gt 0) { "$siteBaseUrl/$($v.images[0])" } else { "$siteBaseUrl/images/general/og-image.jpg" }
