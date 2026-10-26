@@ -15,8 +15,9 @@
   daaruit zo goed mogelijk herbouwd.
 #>
 param(
-  [string]$Source = "C:\Users\Gebruiker\Downloads\Neonoranje auto voor driehoekig embleem.png",
-  [switch]$Legacy   # alleen voor het oude, sterk gecomprimeerde JPEG-bestand
+  [string]$Source = "C:\Users\Gebruiker\Downloads\Neon Stationwagen onder Driehoek.png",
+  [ValidateSet("neon","clean","legacy")][string]$Mode = "neon",   # neon = witte kern met oranje gloed, clean = platte oranje lijnen
+  [switch]$Legacy   # (oud) hetzelfde als -Mode legacy
 )
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
@@ -75,6 +76,33 @@ public static class LogoMaker {
     for(int y=miny;y<=maxy;y++) for(int x=minx;x<=maxx;x++){
       double t=((x-s[0])*dx+(y-s[1])*dy)/len2; t=t<0?0:(t>1?1:t); double px=s[0]+t*dx-x, py=s[1]+t*dy-y; double d=Math.Sqrt(px*px+py*py);
       float v=(float)Math.Max(0,Math.Min(1,hw+0.7-d)); if(v>a[y*w+x]) a[y*w+x]=v; }
+  }
+  // Neon-bron (witte kern met oranje gloed op zwart): zwart wordt transparant, de kleuren blijven behouden
+  public static void MakeNeon(string src, string dst, int pad, int maxSide) {
+    using (var orig = new Bitmap(src)) using (var b = new Bitmap(orig.Width, orig.Height, PixelFormat.Format32bppArgb)) {
+      using (var gg = Graphics.FromImage(b)) gg.DrawImage(orig, 0, 0, orig.Width, orig.Height);
+      int w=b.Width, h=b.Height; var rect0=new Rectangle(0,0,w,h);
+      var d0=b.LockBits(rect0, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+      int n=Math.Abs(d0.Stride)*h; var buf=new byte[n]; Marshal.Copy(d0.Scan0,buf,0,n);
+      int minx=w,miny=h,maxx=0,maxy=0;
+      for(int y=0;y<h;y++) for(int x=0;x<w;x++){ int i=y*d0.Stride+x*4;
+        float bl=buf[i], g=buf[i+1], rr=buf[i+2]; float m=Math.Max(rr,Math.Max(g,bl))/255f;
+        float a=(m-0.04f)/0.30f; a=a<0?0:(a>1?1:a);
+        if(a<=0.001f){ buf[i]=buf[i+1]=buf[i+2]=0; buf[i+3]=0; continue; }
+        float k=1f/Math.Max(m,0.0001f);
+        buf[i]=(byte)Math.Min(255,bl*k); buf[i+1]=(byte)Math.Min(255,g*k); buf[i+2]=(byte)Math.Min(255,rr*k); buf[i+3]=(byte)(a*255);
+        if(a>0.4f){ if(x<minx)minx=x; if(x>maxx)maxx=x; if(y<miny)miny=y; if(y>maxy)maxy=y; } }
+      Marshal.Copy(buf,0,d0.Scan0,n); b.UnlockBits(d0);
+      int cw=maxx-minx+1+2*pad, ch=maxy-miny+1+2*pad;
+      using (var c=new Bitmap(cw,ch,PixelFormat.Format32bppArgb)) {
+        using (var g2=Graphics.FromImage(c)) { g2.CompositingMode=System.Drawing.Drawing2D.CompositingMode.SourceCopy; g2.DrawImage(b,new Rectangle(0,0,cw,ch),new Rectangle(minx-pad,miny-pad,cw,ch),GraphicsUnit.Pixel); }
+        double sc=Math.Min(1.0,(double)maxSide/Math.Max(cw,ch)); int nw=(int)(cw*sc), nh=(int)(ch*sc);
+        using (var o=new Bitmap(nw,nh,PixelFormat.Format32bppArgb)) {
+          using (var g3=Graphics.FromImage(o)) { g3.CompositingMode=System.Drawing.Drawing2D.CompositingMode.SourceCopy; g3.InterpolationMode=System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic; g3.PixelOffsetMode=System.Drawing.Drawing2D.PixelOffsetMode.HighQuality; g3.DrawImage(c,0,0,nw,nh); }
+          o.Save(dst,ImageFormat.Png);
+        }
+      }
+    }
   }
   // Schone bron (oranje lijnen op zwart): helderheid wordt de dekking, kleur wordt het merkoranje
   public static void MakeClean(string src, string dst, int dilate, int blur, int pad, int maxSide, int r, int g, int bl) {
@@ -140,9 +168,12 @@ $logoDir = Join-Path $root "images\logo"; $genDir = Join-Path $root "images\gene
 New-Item -ItemType Directory -Force -Path $logoDir, $genDir | Out-Null
 
 # 1. Het logo zelf (oranje op transparant)
-if($Legacy){
+if($Legacy -or $Mode -eq "legacy"){
   [LogoMaker]::Make($Source, (Join-Path $logoDir "symbol.png"),       2, 2, 40, 700, 236,102,8, 4.5)
   [LogoMaker]::Make($Source, (Join-Path $logoDir "symbol-large.png"), 1, 1, 30, 1400, 236,102,8, 2.5)
+} elseif($Mode -eq "neon") {
+  [LogoMaker]::MakeNeon($Source, (Join-Path $logoDir "symbol.png"),       24, 700)
+  [LogoMaker]::MakeNeon($Source, (Join-Path $logoDir "symbol-large.png"), 24, 1400)
 } else {
   [LogoMaker]::MakeClean($Source, (Join-Path $logoDir "symbol.png"),       2, 1, 24, 700, 236,102,8)
   [LogoMaker]::MakeClean($Source, (Join-Path $logoDir "symbol-large.png"), 0, 1, 24, 1400, 236,102,8)
