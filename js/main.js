@@ -250,3 +250,124 @@ window.AltenaForms = { wireMailtoForm };
     list.insertBefore(li, list.children[1] || null);
   }
 })();
+
+/* ---------- Extra animaties ----------
+   Scrollbalk, tellende cijfers, woorden die omhoog komen en bewegen bij de muis,
+   glanzende knoppen, kaarten die meekantelen, lichtvlek in de hero.
+   Alles staat uit bij "minder beweging" en de muis-effecten ook op touchscreens. */
+(function () {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (reduce) return;
+
+  // 1. Voortgangsbalk bovenaan
+  const bar = document.createElement("div");
+  bar.className = "scroll-progress";
+  document.body.appendChild(bar);
+  const onScroll = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ")";
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  // 2. Titels: elk woord apart, zodat ze omhoog komen en reageren op de muis
+  function splitWords(node, state) {
+    Array.from(node.childNodes).forEach((child) => {
+      if (child.nodeType === 3) {
+        const parts = child.textContent.split(/(\s+)/);
+        const frag = document.createDocumentFragment();
+        parts.forEach((p) => {
+          if (!p) return;
+          if (/^\s+$/.test(p)) { frag.appendChild(document.createTextNode(p)); return; }
+          const s = document.createElement("span");
+          s.className = "w"; s.style.setProperty("--i", state.i++); s.textContent = p;
+          frag.appendChild(s);
+        });
+        child.replaceWith(frag);
+      } else if (child.nodeType === 1 && !child.classList.contains("w")) {
+        splitWords(child, state);
+      }
+    });
+  }
+  const headings = document.querySelectorAll("main h1, main h2");
+  const io = "IntersectionObserver" in window ? new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: 0.4 }) : null;
+  headings.forEach((h) => {
+    if (!h.textContent.trim()) return;
+    splitWords(h, { i: 0 });
+    h.classList.add("words");
+    if (!h.closest(".hero, .page-hero") && h.tagName === "H2" && io) { h.classList.add("split"); io.observe(h); }
+  });
+
+  // 3. Cijfers die optellen zodra ze in beeld komen: <strong data-count="30" data-suffix="+">
+  const counters = document.querySelectorAll("[data-count]");
+  if (counters.length && "IntersectionObserver" in window) {
+    const cio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        cio.unobserve(e.target);
+        const el = e.target, to = parseFloat(el.dataset.count), suffix = el.dataset.suffix || "";
+        const start = performance.now(), dur = 1600;
+        const tick = (now) => {
+          const t = Math.min(1, (now - start) / dur), eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = Math.round(to * eased) + suffix;
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+    }, { threshold: 0.6 });
+    counters.forEach((el) => { el.textContent = "0" + (el.dataset.suffix || ""); cio.observe(el); });
+  }
+
+  // 4. Meer onderdelen die bij scrollen verschijnen
+  document.querySelectorAll(".section-head, .editorial-head, .trust-item, .step-item, .map-frame, .hours-table").forEach((el) => {
+    if (!el.classList.contains("reveal")) el.classList.add("reveal");
+  });
+
+  if (!canHover) return;
+
+  // 5. Lichtvlek die de muis volgt in de hero
+  const hero = document.querySelector(".hero");
+  if (hero) {
+    const spot = document.createElement("div");
+    spot.className = "hero-spot";
+    hero.appendChild(spot);
+    hero.addEventListener("pointermove", (e) => {
+      const r = hero.getBoundingClientRect();
+      spot.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      spot.style.setProperty("--my", (e.clientY - r.top) + "px");
+      spot.style.opacity = "1";
+    });
+    hero.addEventListener("pointerleave", () => { spot.style.opacity = "0"; });
+  }
+
+  // 6. Kaarten kantelen mee met de muis, met een glans
+  function tilt(cardSel, targetSel, max) {
+    let current = null;
+    const reset = () => { if (current) { current.classList.remove("tilting"); current.style.transform = ""; current = null; } };
+    document.addEventListener("pointermove", (e) => {
+      const card = e.target.closest && e.target.closest(cardSel);
+      const tgt = card ? (targetSel ? card.querySelector(targetSel) : card) : null;
+      if (current && current !== tgt) reset();
+      if (!tgt) return;
+      const r = tgt.getBoundingClientRect(), px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      current = tgt; tgt.classList.add("tilting");
+      tgt.style.setProperty("--gx", (px * 100) + "%"); tgt.style.setProperty("--gy", (py * 100) + "%");
+      tgt.style.transform = "perspective(900px) rotateX(" + ((0.5 - py) * max) + "deg) rotateY(" + ((px - 0.5) * max) + "deg) translateY(-4px)";
+    }, { passive: true });
+    document.addEventListener("pointerleave", reset);
+  }
+  tilt(".occasion-card", ".media", 7);
+  tilt(".info-card", null, 6);
+  // 7. Hoofdknoppen trekken licht naar de muis toe
+  document.addEventListener("pointermove", (e) => {
+    document.querySelectorAll(".btn-primary.magnet").forEach((b) => { b.style.transform = ""; b.classList.remove("magnet"); });
+    const btn = e.target.closest && e.target.closest(".btn-primary");
+    if (!btn) return;
+    const r = btn.getBoundingClientRect(), dx = (e.clientX - (r.left + r.width / 2)) / r.width, dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+    btn.classList.add("magnet");
+    btn.style.transform = "translate(" + (dx * 10) + "px," + (dy * 8 - 2) + "px)";
+  }, { passive: true });
+})();
