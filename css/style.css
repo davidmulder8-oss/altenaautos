@@ -1091,3 +1091,30 @@ body { background: var(--color-gray-50); }
 /* Witte kaarten en panelen op licht */
 .info-card, .filters-panel, .sidebar-card, .review-card, .mp-strip, .filter-group select, .filter-group input,
 .form-field input, .form-field select, .form-field textarea, .sort-control select { background: #F5F3EF; }
+
+/* =========================================================
+   Lettergroottes nagelopen: niets kleiner dan 14 px,
+   paginakoppen niet groter dan ~72 px
+   ========================================================= */
+.badge { font-size: 0.875rem; }
+.card-body .brand, .stagger-grid .card-body .brand, .occasion-grid .card-body .brand { font-size: 0.875rem; }
+.card-price small { font-size: 0.875rem; }
+.logo-text { font-size: 0.95rem; }
+.mobile-cta-bar .btn { font-size: 0.875rem; }
+@media (max-width: 480px) { .logo-text { font-size: 0.875rem; } .mobile-cta-bar .btn { font-size: 0.875rem; } }
+
+/* Paginakoppen (Occasions, Over ons, Inruilen, Contact, Privacybeleid) */
+.page-hero h1 { font-size: clamp(2.4rem, 5vw, 4.5rem); line-height: 0.98; }
+@media (max-width: 640px) { .page-hero h1 { font-size: 9vw; } }
+/* Tussenkoppen in de content */
+h2 { font-size: clamp(1.8rem, 3.2vw, 3.2rem); line-height: 1.02; }
+@media (min-width: 1100px) { h2 { font-size: clamp(2.2rem, 3.2vw, 3.2rem); } }
+.legal h2 { font-size: clamp(1.3rem, 2vw, 1.7rem); }
+@media (max-width: 640px) { h2 { font-size: 7.4vw; } .legal h2 { font-size: 1.3rem; } }
+
+/* Formulieren passen altijd op het scherm */
+.form-grid > *, .form-field { min-width: 0; }
+.form-field input, .form-field select, .form-field textarea { width: 100%; max-width: 100%; min-width: 0; }
+.form-field label { overflow-wrap: anywhere; }
+@media (max-width: 640px) { .form-grid { grid-template-columns: minmax(0, 1fr); } }
+.footer-bottom, .card-specs, .quick-specs .item .label, .form-note, .sidebar-note, .filters-count, .breadcrumbs, .detail-price small, .home-points span { font-size: 0.875rem; }
