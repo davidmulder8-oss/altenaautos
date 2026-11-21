@@ -950,3 +950,64 @@ h1, h2, .big-title, .hero h1, .page-hero h1, .cta-band h2, .occasion-card h3, .s
   h2 { font-size: 8vw; hyphens: auto; overflow-wrap: break-word; }
   .big-title { font-size: 9.6vw; }
 }
+
+/* =========================================================
+   Homepage: rustige maten en terug van de belangrijkste info
+   ========================================================= */
+.hero h1 { font-size: clamp(2.8rem, 5.6vw, 5.6rem); line-height: 0.92; margin: 0 0 24px; }
+.hero-kicker, .home-kicker {
+  font-size: 0.85rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; font-stretch: 112%;
+  color: rgba(255,255,255,0.7); margin-bottom: 16px;
+}
+.hero-lead { color: rgba(255,255,255,0.8); font-size: clamp(1rem, 1.3vw, 1.2rem); max-width: 520px; margin-bottom: 32px; line-height: 1.6; }
+.hero .hero-ctas { margin-bottom: 0; }
+.hero-content > * { animation: none; opacity: 1; transform: none; }
+
+.home-usps { background: var(--color-ink); border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); }
+.home-usps ul { display: grid; grid-template-columns: repeat(4, 1fr); }
+.home-usps li { padding: 28px 24px 28px 0; display: flex; flex-direction: column; gap: 4px; }
+.home-usps li + li { padding-left: 24px; border-left: 1px solid rgba(255,255,255,0.08); }
+.home-usps strong { color: #fff; font-weight: 600; font-size: 1rem; }
+.home-usps span { color: rgba(255,255,255,0.55); font-size: 0.9rem; }
+
+.home-stock, .home-why, .home-contact { padding: clamp(72px, 9vw, 120px) 0; }
+.home-stock h2, .home-why h2, .home-contact h2 { font-size: clamp(2rem, 3.4vw, 3.2rem); line-height: 1; color: #fff; }
+.home-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 40px; flex-wrap: wrap; }
+.home-more { display: inline-flex; gap: 8px; color: #fff; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.35); padding-bottom: 4px; transition: border-color var(--dur-fast); }
+.home-more:hover { border-color: #fff; }
+.stagger-grid .card-body h3 { font-size: clamp(1.3rem, 1.7vw, 1.6rem); }
+
+.home-why { background: var(--color-gray-50); }
+.home-why h2 { color: var(--color-ink); }
+.home-why .home-kicker { color: var(--color-text-muted); }
+.home-why .home-more { color: var(--color-ink); border-color: rgba(9,10,15,0.3); }
+.home-why-grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(40px, 6vw, 96px); align-items: start; }
+.home-text { margin: 20px 0 28px; font-size: 1.1rem; max-width: 460px; }
+.home-points li { display: grid; grid-template-columns: 48px 1fr; gap: 8px; padding: 24px 0; border-top: 1px solid var(--color-line); }
+.home-points li:first-child { border-top: 0; padding-top: 0; }
+.home-points span { color: var(--color-text-muted); font-size: 0.9rem; padding-top: 4px; }
+.home-points h3 { font-size: 1.25rem; margin-bottom: 4px; text-transform: none; font-stretch: 100%; }
+.home-points p { font-size: 1rem; }
+.home-points a { color: var(--color-ink); text-decoration: underline; text-underline-offset: 3px; }
+
+.home-contact { background: var(--color-ink); color: #fff; }
+.home-contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin: 40px 0; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.12); }
+.home-contact h3 { color: #fff; font-size: 1rem; margin-bottom: 8px; text-transform: none; font-stretch: 100%; }
+.home-contact p { color: rgba(255,255,255,0.7); line-height: 1.7; }
+.home-contact a:not(.btn) { color: #fff; }
+
+@media (min-width: 1100px) { body { font-size: 18px; } }
+@media (max-width: 900px) {
+  .home-usps ul { grid-template-columns: 1fr 1fr; }
+  .home-usps li, .home-usps li + li { padding: 20px 16px 20px 0; border-left: 0; }
+  .home-why-grid { grid-template-columns: 1fr; }
+  .home-contact-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+@media (max-width: 640px) {
+  .hero h1 { font-size: 11vw; }
+  .hero { padding-bottom: 112px; }
+  .hero .hero-ctas { flex-direction: column; }
+  .hero .hero-ctas .btn { width: 100%; }
+  .home-stock h2, .home-why h2, .home-contact h2 { font-size: 8vw; }
+}
+.home-contact .btn-primary, .home-usps .btn-primary { background: #fff; color: var(--color-ink); } .home-contact .btn-primary:hover { background: #DADADA; }
