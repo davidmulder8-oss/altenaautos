@@ -345,7 +345,7 @@ section { padding: 120px 0; }
 }
 .page-hero::before {
   content: ""; position: absolute; inset: 0; z-index: 0;
-  background: url("../images/general/page-hero.jpg") 70% 40% / cover no-repeat;
+  background: url("../images/general/hero-poster.jpg") 70% 40% / cover no-repeat;
   opacity: 0.4;
   -webkit-mask-image: linear-gradient(90deg, transparent 5%, #000 95%);
   mask-image: linear-gradient(90deg, transparent 5%, #000 95%);
@@ -654,7 +654,7 @@ section { padding: 120px 0; }
 }
 .cta-band::before {
   content: ""; position: absolute; inset: 0; z-index: -2;
-  background: url("../images/general/page-hero.jpg") 70% 45% / cover no-repeat; opacity: 0.55;
+  background: url("../images/general/hero-poster.jpg") 70% 45% / cover no-repeat; opacity: 0.55;
 }
 .cta-band::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
@@ -1188,4 +1188,4 @@ section, .section-gray, .home-why, .home-stock, .home-contact, .site-footer, .pa
 .page-hero::before { display: none; }
 .page-hero-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.55; }
 .page-hero::after { background: linear-gradient(0deg, #0B0C10 0%, rgba(11,12,16,0.55) 55%, rgba(11,12,16,0.35) 100%); }
-@media (prefers-reduced-motion: reduce) { .page-hero-media { display: none; } .page-hero { background: #0B0C10 url("../images/general/page-hero.jpg") center / cover; } }
+@media (prefers-reduced-motion: reduce) { .page-hero-media { display: none; } .page-hero { background: #0B0C10 url("../images/general/hero-poster.jpg") center / cover; } }
