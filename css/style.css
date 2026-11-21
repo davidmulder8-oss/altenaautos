@@ -1118,3 +1118,4 @@ h2 { font-size: clamp(1.8rem, 3.2vw, 3.2rem); line-height: 1.02; }
 .form-field label { overflow-wrap: anywhere; }
 @media (max-width: 640px) { .form-grid { grid-template-columns: minmax(0, 1fr); } }
 .footer-bottom, .card-specs, .quick-specs .item .label, .form-note, .sidebar-note, .filters-count, .breadcrumbs, .detail-price small, .home-points span { font-size: 0.875rem; }
+.filter-group label { font-size: 0.9rem; }
