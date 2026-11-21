@@ -1062,3 +1062,32 @@ h1, h2, .big-title, .hero h1, .page-hero h1, .cta-band h2, .occasion-card h3, .s
 @media (max-width: 640px) { .hero h1 { font-size: 9vw; } }
 /* Op mobiel staan de knoppen al in de vaste onderbalk */
 @media (max-width: 980px) { .hero .hero-ctas { display: none; } .hero h1 { margin-bottom: 0; } }
+
+/* =========================================================
+   Zachter wit: gebroken wit in plaats van fel wit
+   ========================================================= */
+:root {
+  --soft-white: #E9E6E0;      /* knoppen en koppen op donker */
+  --soft-text: rgba(233,230,224,0.72);
+  --color-white: #E9E6E0;
+  --color-gray-50: #EDEAE4;   /* lichte achtergrond */
+  --color-gray-100: #E5E2DB;
+  --color-line: #D9D5CC;
+}
+body { background: var(--color-gray-50); }
+/* Koppen en tekst op donker */
+.hero h1, .page-hero h1, .home-stock h2, .home-contact h2, .big-title, .section-dark h2, .section-dark h3,
+.cta-band h2, .logo-text, .home-contact h3, .stagger-grid .card-body h3, .stagger-grid .card-price,
+.main-nav a[aria-current="page"], .main-nav a:hover, .footer-col h4, .home-more { color: var(--soft-white); }
+.main-nav a { color: rgba(233,230,224,0.78); }
+.home-contact a:not(.btn), .footer-bottom .credit a { color: var(--soft-white); }
+/* Knoppen op donker: gebroken wit */
+.hero .btn-primary, .page-hero .btn-primary, .section-dark .btn-primary, .cta-band .btn-primary,
+.site-header .btn-primary, .mobile-cta-bar .btn-primary, .home-contact .btn-primary, .cookie-banner .btn-primary {
+  background: var(--soft-white); color: var(--color-ink);
+}
+.hero .btn-primary:hover, .home-contact .btn-primary:hover, .mobile-cta-bar .btn-primary:hover, .cookie-banner .btn-primary:hover { background: #D6D2CA; }
+.btn-secondary { color: var(--soft-white); border-color: rgba(233,230,224,0.3); }
+/* Witte kaarten en panelen op licht */
+.info-card, .filters-panel, .sidebar-card, .review-card, .mp-strip, .filter-group select, .filter-group input,
+.form-field input, .form-field select, .form-field textarea, .sort-control select { background: #F5F3EF; }
