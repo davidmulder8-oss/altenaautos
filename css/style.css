@@ -9,8 +9,8 @@
 
 :root {
   /* Colors */
-  --color-ink:        #0A0C0F;
-  --color-ink-soft:   #12161B;
+  --color-ink:        #090A0F;
+  --color-ink-soft:   #11131A;
   --color-ink-line:   rgba(255, 255, 255, 0.10);
   --color-ink-line-strong: rgba(255, 255, 255, 0.18);
 
@@ -289,6 +289,9 @@ section { padding: 120px 0; }
   color: var(--color-white); font-size: clamp(2.6rem, 5.6vw, 5rem); font-weight: 600;
   line-height: 1.02; letter-spacing: -0.01em; max-width: 14ch; margin-bottom: 28px;
 }
+/* Tweede deel van de kop in contourletters; op kleine schermen gewoon wit voor de leesbaarheid */
+.hero h1 .outline { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.92); }
+@media (max-width: 640px) { .hero h1 .outline { color: var(--color-white); -webkit-text-stroke: 0; } }
 .hero p.lead { font-size: clamp(1.05rem, 1.5vw, 1.25rem); color: rgba(255,255,255,0.76); max-width: 500px; margin-bottom: 40px; line-height: 1.6; }
 .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 56px; }
 
@@ -371,6 +374,11 @@ section { padding: 120px 0; }
 .occasion-rail::-webkit-scrollbar { display: none; }
 .occasion-rail > .occasion-card { flex: 0 0 min(84vw, 460px); scroll-snap-align: start; }
 .occasion-rail > p { color: rgba(255,255,255,0.6); }
+/* Kaarten om en om iets lager, zodat de rij als een showroom leest in plaats van een raster */
+@media (min-width: 901px) {
+  .occasion-rail { padding-bottom: 64px; }
+  .occasion-rail > .occasion-card:nth-child(even) { margin-top: 56px; }
+}
 
 .rail-controls { display: flex; gap: 8px; }
 .rail-btn {
