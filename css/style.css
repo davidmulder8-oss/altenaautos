@@ -1119,3 +1119,67 @@ h2 { font-size: clamp(1.8rem, 3.2vw, 3.2rem); line-height: 1.02; }
 @media (max-width: 640px) { .form-grid { grid-template-columns: minmax(0, 1fr); } }
 .footer-bottom, .card-specs, .quick-specs .item .label, .form-note, .sidebar-note, .filters-count, .breadcrumbs, .detail-price small, .home-points span { font-size: 0.875rem; }
 .filter-group label { font-size: 0.9rem; }
+
+/* =========================================================
+   Donker thema: geen lichte vlakken meer, gedempte tekst
+   ========================================================= */
+:root {
+  --soft-white: #D9D5CD;
+  --color-white: #D9D5CD;
+  --color-text: #C4C0B8;
+  --color-text-muted: #8E8B84;
+  --color-line: rgba(217,213,205,0.12);
+  --color-gray-50: #101216;
+  --color-gray-100: #15181D;
+  --color-gray-200: #252931;
+  --color-gray-300: #333842;
+  --surface-1: #15181D;
+  --surface-2: #1B1F25;
+}
+html, body { background: #0B0C10; color: var(--color-text); }
+p { color: var(--color-text-muted); }
+h1, h2, h3, h4, .home-why h2, .filters-panel h2, .sidebar-card h1, .sidebar-card h3, .detail-section h2,
+.empty-state h3, .stock-toolbar .result-count, .legal h2 { color: var(--soft-white); }
+.hero h1, .page-hero h1, .big-title, .home-stock h2, .home-contact h2 { color: var(--soft-white); }
+
+/* Vlakken */
+section, .section-gray, .home-why, .home-stock, .home-contact, .site-footer, .page-hero, .section-dark { background-color: #0B0C10; }
+.section-gray, .home-why { background-color: var(--surface-1); }
+.info-card, .filters-panel, .sidebar-card, .review-card, .mp-strip, .map-frame, .map-consent { background: var(--surface-2); border-color: var(--color-line); }
+.filter-group select, .filter-group input, .form-field input, .form-field select, .form-field textarea, .sort-control select {
+  background: #0F1115; color: var(--color-text); border-color: var(--color-gray-200);
+}
+.form-field input::placeholder, .form-field textarea::placeholder { color: #6E6B65; }
+.form-field label, .filter-group label { color: var(--color-text); }
+.selected-vehicle-chip, .similar-strip { background: var(--surface-2); border-color: var(--color-line); color: var(--color-text); }
+
+/* Tekst in kaarten, tabellen en lijsten */
+.occasion-card { --c-ink: var(--soft-white); --c-muted: var(--color-text-muted); --c-soft: #6E6B65; }
+.spec-table td:last-child, .quick-specs .item .value, .detail-price, .hours-table td:last-child,
+.equipment-grid li, .detail-description, .home-points h3, .legal p, .legal li, .trust-item h3, .info-card h3 { color: var(--color-text); }
+.detail-price { color: var(--soft-white); }
+.home-points a, .legal a, .map-consent a, .info-card a, .home-why .home-more { color: var(--soft-white); }
+.home-why .home-more { border-color: rgba(217,213,205,0.3); }
+
+/* Knoppen: gebroken wit op donker, overal */
+.btn-primary { background: var(--soft-white); color: #0B0C10; }
+.btn-primary:hover { background: #C6C2BA; }
+.btn-outline { color: var(--soft-white); border-color: rgba(217,213,205,0.3); }
+.btn-outline:hover { background: rgba(217,213,205,0.1); border-color: rgba(217,213,205,0.5); color: var(--soft-white); }
+.btn-secondary { color: var(--soft-white); border-color: rgba(217,213,205,0.28); background: rgba(217,213,205,0.04); }
+.card-go { color: var(--soft-white); border-color: #4A4E57; }
+.occasion-card:hover .card-go { background: var(--soft-white); border-color: var(--soft-white); color: #0B0C10; }
+.gallery-thumbs button.active { border-color: var(--soft-white); }
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--soft-white); box-shadow: 0 0 0 3px rgba(217,213,205,0.12); }
+::selection { background: var(--soft-white); color: #0B0C10; }
+:focus-visible { outline-color: var(--soft-white); }
+
+/* Footer en menu iets gedempter */
+.site-footer, .footer-col a, .footer-brand p { color: var(--color-text-muted); }
+.footer-col a:hover { color: var(--soft-white); }
+.main-nav a { color: rgba(217,213,205,0.7); }
+.main-nav a[aria-current="page"], .main-nav a:hover { color: var(--soft-white); }
+/* Hoofdknoppen: warm grijs in plaats van licht */
+.btn-primary, .hero .btn-primary, .page-hero .btn-primary, .section-dark .btn-primary, .cta-band .btn-primary,
+.site-header .btn-primary, .mobile-cta-bar .btn-primary, .home-contact .btn-primary, .cookie-banner .btn-primary { background: #B3AEA5; color: #0B0C10; }
+.btn-primary:hover, .hero .btn-primary:hover, .home-contact .btn-primary:hover, .mobile-cta-bar .btn-primary:hover, .cookie-banner .btn-primary:hover { background: #C2BDB4; }
