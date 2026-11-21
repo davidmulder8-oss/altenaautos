@@ -720,3 +720,74 @@ section { padding: 120px 0; }
 .logo .logo-wordmark { height: 48px; width: auto; }
 .footer-brand .logo .logo-wordmark { height: 56px; }
 @media (max-width: 480px) { .logo .logo-wordmark { height: 36px; } .logo img:not(.logo-wordmark) { height: 36px; width: auto; } }
+
+/* =========================================================
+   Homepage: groot en simpel. Foto's dragen de pagina,
+   tekst is kort en groot. (Inspiratie: showroom-sites met
+   volle foto's en grote koppen.)
+   ========================================================= */
+/* Minder tekst in de header: geen extra knop naast het menu op desktop */
+@media (min-width: 981px) { .header-actions > a.btn { display: none; } }
+
+.hero { align-items: flex-end; padding-bottom: clamp(48px, 8vh, 96px); }
+.hero::after {
+  background:
+    linear-gradient(0deg, var(--color-ink) 0%, rgba(9,10,15,0.35) 40%, rgba(9,10,15,0) 70%),
+    linear-gradient(180deg, rgba(9,10,15,0.6) 0%, rgba(9,10,15,0) 20%);
+}
+.hero h1 {
+  font-size: clamp(3.4rem, 11vw, 10rem); line-height: 0.92; letter-spacing: -0.02em;
+  max-width: none; margin: 0; font-weight: 600;
+}
+.hero h1 .outline, .big-title .outline { color: transparent; -webkit-text-stroke: 2px rgba(255,255,255,0.95); }
+@media (max-width: 640px) {
+  .hero { padding-bottom: 120px; }
+  .hero h1 .outline, .big-title .outline { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.95); }
+}
+
+.big-title {
+  color: var(--color-white); font-size: clamp(3rem, 9vw, 8rem); line-height: 0.92;
+  letter-spacing: -0.02em; font-weight: 600; margin-bottom: clamp(40px, 6vw, 80px);
+}
+
+/* Voorraad: twee kolommen grote foto's, de rechterkolom zakt wat */
+.home-stock, .home-promise, .home-call { background: var(--color-ink); color: var(--color-white); }
+.home-stock { padding-top: clamp(64px, 10vw, 128px); }
+.stagger-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+.stagger-grid > .occasion-card:nth-child(even) { margin-top: 128px; }
+.stagger-grid > p { color: rgba(255,255,255,0.6); }
+.stagger-grid .occasion-card { --c-ink: var(--color-white); --c-muted: rgba(255,255,255,0.6); --c-soft: rgba(255,255,255,0.4); }
+.stagger-grid .media { aspect-ratio: 4 / 5; border-radius: 4px; }
+.stagger-grid .version, .stagger-grid .card-specs, .stagger-grid .card-go, .stagger-grid .card-price small { display: none; }
+.stagger-grid .card-body { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 16px; padding-top: 16px; }
+.stagger-grid .card-body .brand { display: inline; margin: 0 8px 0 0; color: rgba(255,255,255,0.6); font-size: 1.1rem; }
+.stagger-grid .card-body h3 { display: inline; font-size: clamp(1.25rem, 2vw, 1.6rem); }
+.stagger-grid .card-body > div:first-child { display: block; }
+.stagger-grid .card-footer { margin: 0; padding: 0; border: 0; }
+.stagger-grid .card-price { font-size: clamp(1.1rem, 1.6vw, 1.35rem); }
+@media (max-width: 700px) {
+  .stagger-grid { grid-template-columns: 1fr; gap: 40px; }
+  .stagger-grid > .occasion-card:nth-child(even) { margin-top: 0; }
+}
+
+.big-link {
+  display: inline-flex; align-items: center; gap: 16px; margin-top: 64px;
+  font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 500; color: var(--color-white);
+  border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 8px;
+  transition: border-color var(--dur-fast);
+}
+.big-link:hover { border-color: var(--color-white); }
+
+.home-promise { padding: clamp(96px, 14vw, 192px) 0 clamp(64px, 10vw, 128px); }
+.promise-row { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid rgba(255,255,255,0.12); }
+.promise-row li { padding: 24px 24px 0 0; font-size: clamp(1rem, 1.4vw, 1.2rem); color: rgba(255,255,255,0.72); }
+@media (max-width: 700px) { .promise-row { grid-template-columns: 1fr 1fr; } .promise-row li { padding-bottom: 16px; } }
+
+.home-call { padding: 0 0 clamp(96px, 12vw, 160px); }
+.big-phone {
+  display: inline-block; font-family: var(--font-mono); font-weight: 500; letter-spacing: -0.02em;
+  font-size: clamp(2.2rem, 7vw, 6rem); line-height: 1; color: var(--color-white);
+  transition: color var(--dur-fast);
+}
+.big-phone:hover { color: var(--color-orange-light); }
+.home-call p { margin-top: 16px; color: rgba(255,255,255,0.6); font-size: 1.1rem; }
