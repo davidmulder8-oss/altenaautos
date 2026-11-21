@@ -5,7 +5,7 @@
    alleen op knoppen en prijzen.
    Typografie: Barlow (tekst) + IBM Plex Mono (specificaties).
    ========================================================= */
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=PT+Sans+Narrow:wght@700&display=swap");
 
 :root {
   /* Colors */
@@ -14,10 +14,10 @@
   --color-ink-line:   rgba(255, 255, 255, 0.10);
   --color-ink-line-strong: rgba(255, 255, 255, 0.18);
 
-  --color-orange:      #EC6608;
-  --color-orange-dark: #C8530A;
-  --color-orange-light:#FF8A3D;
-  --color-orange-wash: rgba(236, 102, 8, 0.10);
+  --color-orange:      #090A0F;
+  --color-orange-dark: #090A0F;
+  --color-orange-light:#FFFFFF;
+  --color-orange-wash: rgba(9, 10, 15, 0.06);
 
   --color-white:  #FFFFFF;
   --color-gray-50:  #F6F4F0;
@@ -37,10 +37,10 @@
   --color-sold:      #6B7280;
 
   /* Typography */
-  --font-display: "Barlow", "Segoe UI", Arial, sans-serif;
-  --font-body: "Barlow", "Segoe UI", Arial, sans-serif;
-  --font-serif: "Barlow", "Segoe UI", Arial, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --font-display: "PT Sans", "Segoe UI", Arial, sans-serif;
+  --font-body: "PT Sans", "Segoe UI", Arial, sans-serif;
+  --font-serif: "PT Sans", "Segoe UI", Arial, sans-serif;
+  --font-mono: "PT Sans", "Segoe UI", Arial, sans-serif;
 
   /* Radii */
   --radius-sm: 8px;
@@ -156,7 +156,7 @@ section { padding: 120px 0; }
 .btn:active { transform: scale(0.98); }
 /* Witte tekst op oranje haalt geen 4,5:1, dus de knop gebruikt de donkere oranje tint */
 .btn-primary { background: var(--color-orange-dark); color: var(--color-white) }
-.btn-primary:hover { background: #B04808; }
+.btn-primary:hover { background: #2B333C; }
 .btn-secondary { background: rgba(255,255,255,0.06); color: var(--color-white); border-color: rgba(255,255,255,0.24); }
 .btn-secondary:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.4); }
 .btn-outline { background: transparent; color: var(--color-ink); border-color: rgba(10,12,15,0.22); }
@@ -610,7 +610,7 @@ section { padding: 120px 0; }
 
 .selected-vehicle-chip {
   display: inline-flex; align-items: center; gap: 12px; background: var(--color-orange-wash);
-  border: 1px solid rgba(236,102,8,0.25); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 24px;
+  border: 1px solid rgba(9,10,15,0.16); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 24px;
 }
 .selected-vehicle-chip button { color: var(--color-orange-dark); font-weight: 600; font-size: 0.86rem; }
 
@@ -791,3 +791,81 @@ section { padding: 120px 0; }
 }
 .big-phone:hover { color: var(--color-orange-light); }
 .home-call p { margin-top: 16px; color: rgba(255,255,255,0.6); font-size: 1.1rem; }
+
+/* =========================================================
+   Zwart-wit en groot (zoals een showroom-site)
+   - Geen oranje: knoppen zijn wit op donker en zwart op licht
+   - Koppen in PT Sans Narrow, vet en in hoofdletters, links uitgelijnd
+   - Op de pc alles een stuk groter
+   ========================================================= */
+h1, h2, .big-title, .hero h1, .page-hero h1, .cta-band h2 {
+  font-family: "PT Sans Narrow", "PT Sans", Arial, sans-serif;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0; text-align: left;
+}
+h3 { font-weight: 700; }
+.text-center, .section-head.center { text-align: left; margin-left: 0; }
+
+/* Knoppen: wit op donker, zwart op licht */
+.btn-primary { background: var(--color-ink); color: var(--color-white); }
+.btn-primary:hover { background: #2B333C; }
+.hero .btn-primary, .page-hero .btn-primary, .section-dark .btn-primary, .cta-band .btn-primary,
+.site-header .btn-primary, .mobile-cta-bar .btn-primary, .home-stock .btn-primary {
+  background: var(--color-white); color: var(--color-ink);
+}
+.hero .btn-primary:hover, .page-hero .btn-primary:hover, .section-dark .btn-primary:hover, .cta-band .btn-primary:hover,
+.site-header .btn-primary:hover, .mobile-cta-bar .btn-primary:hover { background: #DADADA; }
+.btn { text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; border-radius: 0; }
+.occasion-card:hover .card-go { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-white); }
+.section-dark .occasion-card:hover .card-go { background: var(--color-white); border-color: var(--color-white); color: var(--color-ink); }
+
+/* Menu in hoofdletters, iets groter */
+.main-nav a { text-transform: uppercase; font-size: 1rem; letter-spacing: 0.04em; color: rgba(255,255,255,0.86); }
+
+/* Hero: enorme kop linksonder */
+.hero h1 { font-size: clamp(3.6rem, 10vw, 9.5rem); line-height: 0.9; }
+.big-title { font-size: clamp(3rem, 8.5vw, 8rem); line-height: 0.9; }
+.page-hero h1 { font-size: clamp(3rem, 8vw, 7.5rem); line-height: 0.92; }
+
+/* Pc: alles een stuk groter */
+@media (min-width: 1100px) {
+  :root { --container-w: 1440px; }
+  .container { padding: 0 56px; }
+  body { font-size: 20px; }
+  h2 { font-size: clamp(3rem, 5vw, 5rem); line-height: 0.95; }
+  h3 { font-size: 1.6rem; }
+  .section-head p, .page-hero p, .cta-band p, .editorial-head p { font-size: 1.3rem; max-width: 640px; }
+  .main-nav a { font-size: 1.1rem; padding: 8px 20px; }
+  .btn { font-size: 1.05rem; padding: 20px 36px; }
+  .promise-row li { font-size: 1.4rem; }
+  .home-call p { font-size: 1.4rem; }
+  .big-link { font-size: 2.6rem; }
+  .footer-col h4 { font-size: 1.1rem; }
+  .site-footer, .footer-brand p { font-size: 1.05rem; }
+}
+
+/* =========================================================
+   Autokaarten homepage: liggende foto's (zo zijn ze gemaakt),
+   twee per rij, naam groot in hoofdletters, prijs eronder
+   ========================================================= */
+.stagger-grid { grid-template-columns: 1fr 1fr; gap: 64px 40px; }
+.stagger-grid > .occasion-card:nth-child(even) { margin-top: 0; }
+.stagger-grid .media { aspect-ratio: 3 / 2; border-radius: 0; }
+.stagger-grid .card-badges { top: 16px; left: 16px; }
+.stagger-grid .card-body { flex-direction: column; align-items: flex-start; gap: 8px; padding-top: 20px; }
+.stagger-grid .card-body .brand {
+  display: block; margin: 0 0 4px; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.55);
+}
+.stagger-grid .card-body h3 {
+  display: block; font-family: "PT Sans Narrow", "PT Sans", Arial, sans-serif; text-transform: uppercase;
+  font-size: clamp(2rem, 3.4vw, 3.2rem); line-height: 0.95; letter-spacing: 0;
+}
+.stagger-grid .card-price { font-family: var(--font-body); font-weight: 400; font-size: clamp(1.2rem, 1.6vw, 1.5rem); color: rgba(255,255,255,0.8); }
+.stagger-grid .occasion-card:hover .media img { opacity: 0.85; }
+@media (max-width: 700px) { .stagger-grid { grid-template-columns: 1fr; gap: 48px; } }
+/* Hero-inhoud over de volle breedte, zodat de kop echt links begint */
+.hero-content { width: 100%; }
+/* Occasionspagina: zelfde strakke kaarten als de homepage */
+.occasion-grid .media, .gallery-main, .gallery-thumbs button, .filters-panel, .sidebar-card, .info-card, .cta-band, .map-frame { border-radius: 0; }
+.occasion-grid .card-body .brand { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem; }
+.occasion-grid .card-body h3, .sidebar-card h1 { font-family: "PT Sans Narrow", "PT Sans", Arial, sans-serif; text-transform: uppercase; font-size: clamp(1.8rem, 2.4vw, 2.4rem); line-height: 0.95; }
+.card-go { border-radius: 0; }
