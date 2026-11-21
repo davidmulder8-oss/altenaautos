@@ -226,3 +226,55 @@ window.AltenaForms = { wireMailtoForm };
     list.insertBefore(li, list.children[1] || null);
   }
 })();
+
+/* ---------- Cookiemelding ----------
+   De site zelf plaatst geen tracking-cookies. Alleen de Google Maps-kaart
+   (Contact, Over ons) kan cookies plaatsen; die laadt pas na toestemming.
+   De keuze wordt in de eigen browser bewaard ("altena-cookies": "all" of "necessary"). */
+(function () {
+  const KEY = "altena-cookies";
+  const read = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
+  const save = (v) => { try { localStorage.setItem(KEY, v); } catch (e) {} };
+  const base = location.pathname.startsWith("/occasions/") ? "/" : "";
+
+  function loadMaps() {
+    document.querySelectorAll("iframe[data-consent-src]").forEach((f) => {
+      if (!f.src) f.src = f.dataset.consentSrc;
+      f.hidden = false;
+      const ph = f.parentElement.querySelector(".map-consent");
+      if (ph) ph.hidden = true;
+    });
+  }
+
+  let banner = null;
+  function showBanner() {
+    if (banner) { banner.hidden = false; return; }
+    banner = document.createElement("div");
+    banner.className = "cookie-banner";
+    banner.setAttribute("role", "dialog");
+    banner.setAttribute("aria-label", "Cookiemelding");
+    banner.innerHTML =
+      '<p>Wij gebruiken geen cookies voor statistieken of advertenties. Alleen de kaart van Google Maps kan cookies plaatsen. ' +
+      '<a href="' + base + 'privacybeleid.html">Lees ons privacybeleid</a></p>' +
+      '<div class="cookie-actions">' +
+      '<button type="button" class="btn btn-secondary" data-choice="necessary">Alleen noodzakelijk</button>' +
+      '<button type="button" class="btn btn-primary" data-choice="all">Alles accepteren</button></div>';
+    banner.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-choice]");
+      if (!b) return;
+      save(b.dataset.choice);
+      banner.hidden = true;
+      if (b.dataset.choice === "all") loadMaps();
+    });
+    document.body.appendChild(banner);
+  }
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(".cookie-settings-link")) showBanner();
+    if (e.target.closest("[data-load-map]")) loadMaps();
+  });
+
+  const choice = read();
+  if (choice === "all") loadMaps();
+  if (!choice) showBanner();
+})();
