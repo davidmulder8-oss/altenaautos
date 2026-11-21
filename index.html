@@ -27,9 +27,7 @@
 <meta name="theme-color" content="#090A0F">
 
 <!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=PT+Sans+Narrow:wght@700&display=swap" rel="stylesheet">
+<link rel="preload" href="/fonts/archivo-variable.woff2" as="font" type="font/woff2" crossorigin>
 
 <link rel="stylesheet" href="css/style.css">
 
@@ -108,9 +106,13 @@
 
 <main id="main">
 
-  <section class="hero" style="--hero-image: url('../images/general/hero.webp');">
+  <section class="hero hero-video">
+    <video class="hero-media" autoplay muted loop playsinline preload="metadata" poster="images/general/hero-poster.jpg" aria-hidden="true">
+      <source src="images/general/hero-720.mp4" type="video/mp4" media="(max-width: 900px)">
+      <source src="images/general/hero-1080.mp4" type="video/mp4">
+    </video>
     <div class="container hero-content">
-      <h1><span class="outline">Betrouwbare</span><br>occasions</h1>
+      <h1>Betrouwbare<br>occasions</h1>
     </div>
   </section>
 
@@ -126,7 +128,7 @@
 
   <section class="home-promise" aria-labelledby="promise-heading">
     <div class="container">
-      <h2 id="promise-heading" class="big-title"><span class="outline">Persoonlijk</span><br>geregeld</h2>
+      <h2 id="promise-heading" class="big-title">Persoonlijk<br>geregeld</h2>
       <ul class="promise-row">
         <li>Dealer onderhouden</li>
         <li>NAP-gecontroleerd</li>

@@ -5,7 +5,11 @@
    alleen op knoppen en prijzen.
    Typografie: Barlow (tekst) + IBM Plex Mono (specificaties).
    ========================================================= */
-@import url("https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=PT+Sans+Narrow:wght@700&display=swap");
+@font-face {
+  font-family: "Archivo"; font-style: normal; font-display: swap;
+  font-weight: 100 900; font-stretch: 62% 125%;
+  src: url("../fonts/archivo-variable.woff2") format("woff2-variations"), url("../fonts/archivo-variable.woff2") format("woff2");
+}
 
 :root {
   /* Colors */
@@ -37,10 +41,10 @@
   --color-sold:      #6B7280;
 
   /* Typography */
-  --font-display: "PT Sans", "Segoe UI", Arial, sans-serif;
-  --font-body: "PT Sans", "Segoe UI", Arial, sans-serif;
-  --font-serif: "PT Sans", "Segoe UI", Arial, sans-serif;
-  --font-mono: "PT Sans", "Segoe UI", Arial, sans-serif;
+  --font-display: "Archivo", "Segoe UI", Arial, sans-serif;
+  --font-body: "Archivo", "Segoe UI", Arial, sans-serif;
+  --font-serif: "Archivo", "Segoe UI", Arial, sans-serif;
+  --font-mono: "Archivo", "Segoe UI", Arial, sans-serif;
 
   /* Radii */
   --radius-sm: 8px;
@@ -799,7 +803,7 @@ section { padding: 120px 0; }
    - Op de pc alles een stuk groter
    ========================================================= */
 h1, h2, .big-title, .hero h1, .page-hero h1, .cta-band h2 {
-  font-family: "PT Sans Narrow", "PT Sans", Arial, sans-serif;
+  font-family: "Archivo", "Segoe UI", Arial, sans-serif;
   font-weight: 700; text-transform: uppercase; letter-spacing: 0; text-align: left;
 }
 h3 { font-weight: 700; }
@@ -856,7 +860,7 @@ h3 { font-weight: 700; }
   display: block; margin: 0 0 4px; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.55);
 }
 .stagger-grid .card-body h3 {
-  display: block; font-family: "PT Sans Narrow", "PT Sans", Arial, sans-serif; text-transform: uppercase;
+  display: block; font-family: "Archivo", "Segoe UI", Arial, sans-serif; text-transform: uppercase;
   font-size: clamp(2rem, 3.4vw, 3.2rem); line-height: 0.95; letter-spacing: 0;
 }
 .stagger-grid .card-price { font-family: var(--font-body); font-weight: 400; font-size: clamp(1.2rem, 1.6vw, 1.5rem); color: rgba(255,255,255,0.8); }
@@ -867,5 +871,82 @@ h3 { font-weight: 700; }
 /* Occasionspagina: zelfde strakke kaarten als de homepage */
 .occasion-grid .media, .gallery-main, .gallery-thumbs button, .filters-panel, .sidebar-card, .info-card, .cta-band, .map-frame { border-radius: 0; }
 .occasion-grid .card-body .brand { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem; }
-.occasion-grid .card-body h3, .sidebar-card h1 { font-family: "PT Sans Narrow", "PT Sans", Arial, sans-serif; text-transform: uppercase; font-size: clamp(1.8rem, 2.4vw, 2.4rem); line-height: 0.95; }
+.occasion-grid .card-body h3, .sidebar-card h1 { font-family: "Archivo", "Segoe UI", Arial, sans-serif; text-transform: uppercase; font-size: clamp(1.8rem, 2.4vw, 2.4rem); line-height: 0.95; }
 .card-go { border-radius: 0; }
+
+/* =========================================================
+   Archivo + video-hero + autokaarten (laatste ronde)
+   ========================================================= */
+body { font-family: "Archivo", "Segoe UI", Arial, sans-serif; font-stretch: 100%; }
+h1, h2, .big-title, .hero h1, .page-hero h1, .cta-band h2, .occasion-card h3, .sidebar-card h1 {
+  font-family: "Archivo", "Segoe UI", Arial, sans-serif;
+  font-stretch: 118%; font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em;
+}
+.btn, .main-nav a { font-stretch: 112%; }
+.hero h1 .outline, .big-title .outline { color: inherit; -webkit-text-stroke: 0; }
+
+/* Hero: lege achtergrond met de video eroverheen */
+.hero-video::before { display: none; }
+.hero-video { background: var(--color-ink); }
+.hero-media {
+  position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+}
+.hero-video::after {
+  background:
+    linear-gradient(0deg, rgba(9,10,15,0.85) 0%, rgba(9,10,15,0.25) 45%, rgba(9,10,15,0) 70%),
+    linear-gradient(180deg, rgba(9,10,15,0.55) 0%, rgba(9,10,15,0) 22%);
+}
+.hero h1 { font-size: clamp(3rem, 8.4vw, 8.4rem); line-height: 0.9; }
+@media (prefers-reduced-motion: reduce) { .hero-media { display: none; } .hero-video { background: var(--color-ink) url("../images/general/hero-poster.jpg") center / cover; } }
+
+/* Autokaarten homepage: foto met naam en prijs eroverheen, drie naast elkaar */
+.stagger-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.stagger-grid .occasion-card { position: relative; overflow: hidden; }
+.stagger-grid .media { aspect-ratio: 4 / 3; border-radius: 0; }
+.stagger-grid .media::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(0deg, rgba(9,10,15,0.92) 0%, rgba(9,10,15,0.4) 32%, rgba(9,10,15,0) 58%);
+}
+.stagger-grid .media img { transition: transform 0.6s var(--ease-out), opacity var(--dur-med); }
+.stagger-grid .occasion-card:hover .media img { transform: scale(1.03); opacity: 1; }
+.stagger-grid .card-body {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; pointer-events: none;
+  padding: 24px; display: flex; flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 16px;
+}
+.stagger-grid .card-body a { pointer-events: auto; }
+.stagger-grid .card-body .brand { font-size: 0.8rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.7); margin: 0 0 6px; }
+.stagger-grid .card-body h3 { font-size: clamp(1.6rem, 2.2vw, 2.2rem); line-height: 0.95; color: #fff; }
+.stagger-grid .card-footer { border: 0; padding: 0; margin: 0; }
+.stagger-grid .card-price { color: #fff; font-size: 1.15rem; font-weight: 500; white-space: nowrap; font-stretch: 100%; }
+.stagger-grid .card-price.on-request { font-size: 0.95rem; color: rgba(255,255,255,0.75); }
+.stagger-grid .card-badges { top: 16px; left: 16px; }
+@media (max-width: 1000px) { .stagger-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .stagger-grid { grid-template-columns: 1fr; gap: 12px; } .stagger-grid .card-body { padding: 20px; } }
+/* Mobiel: brede letters passend maken */
+@media (max-width: 640px) {
+  .hero h1 { font-size: 10.4vw; }
+  .big-title { font-size: 12vw; }
+  .page-hero h1 { font-size: 10vw; overflow-wrap: anywhere; }
+  .mobile-cta-bar .btn { font-stretch: 100%; font-size: 0.8rem; letter-spacing: 0.02em; padding: 12px 8px; }
+}
+/* Niets breder dan het scherm */
+.split-2 > *, .footer-grid > *, .stock-layout > *, .detail-layout > * { min-width: 0; }
+.footer-brand .logo { max-width: 100%; }
+.footer-brand .logo img { max-width: 100%; height: auto; }
+@media (max-width: 640px) {
+  .footer-brand .logo .logo-wordmark { height: 40px; width: auto; }
+  .big-phone { font-size: 9.6vw; }
+}
+.footer-brand .logo img { height: 48px; width: auto; max-width: none; }
+.footer-brand .logo .logo-wordmark { height: 52px; }
+@media (max-width: 640px) {
+  .footer-brand .logo img { height: 36px; }
+  .footer-brand .logo .logo-wordmark { height: 36px; }
+  .hero h1 { font-size: 9.2vw; }
+  .btn { white-space: normal; text-align: center; }
+}
+@media (max-width: 640px) {
+  h2 { font-size: 8vw; hyphens: auto; overflow-wrap: break-word; }
+  .big-title { font-size: 9.6vw; }
+}
