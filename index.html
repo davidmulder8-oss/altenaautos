@@ -24,11 +24,11 @@
 <link rel="icon" type="image/png" href="/favicon-16.png" sizes="16x16">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<meta name="theme-color" content="#090A0F">
+<meta name="theme-color" content="#111315">
 
 <!-- Fonts -->
-<link rel="preload" href="/fonts/archivo-variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/sora-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/sora-variable.woff2" as="font" type="font/woff2" crossorigin>
 
 <link rel="stylesheet" href="css/style.css">
 
@@ -114,6 +114,7 @@
     <div class="container hero-content">
       <h1>Altena<br>Auto's</h1>
       <p class="hero-tagline">In- en verkoop van occasions</p>
+      <p class="hero-lead">Zorgvuldig geselecteerde occasions. Persoonlijke service. Kwaliteit waarop je kunt vertrouwen.</p>
       <div class="hero-ctas">
         <a href="occasions.html" class="btn btn-primary">Bekijk occasions</a>
         <a href="tel:+31621816055" class="btn btn-secondary">Bel 06 - 218 16 055</a>
@@ -121,35 +122,48 @@
     </div>
   </section>
 
-  <section id="occasions" class="home-stock" aria-labelledby="occasions-heading">
+  <section id="occasions" class="collection" aria-labelledby="occasions-heading">
     <div class="container">
-      <div class="home-head">
-        <div>
-          <p class="home-kicker">Actuele voorraad</p>
-          <h2 id="occasions-heading">Onze occasions</h2>
-        </div>
-        <a href="occasions.html" class="home-more">Alle occasions <span aria-hidden="true">→</span></a>
+      <div class="section-intro">
+        <h2 id="occasions-heading">Onze collectie</h2>
+        <p>Ontdek onze zorgvuldig geselecteerde occasions.</p>
       </div>
-      <div class="stagger-grid" id="home-occasion-grid">
+      <div class="collection-grid" id="home-occasion-grid">
         <p>Occasions worden geladen…</p>
+      </div>
+      <div class="collection-more">
+        <a href="occasions.html" class="btn btn-outline">Bekijk alle occasions</a>
       </div>
     </div>
   </section>
 
-  <section class="home-why" aria-labelledby="why-heading">
-    <div class="container home-why-grid">
-      <div>
-        <p class="home-kicker">Waarom Altena Auto's</p>
-        <h2 id="why-heading">Persoonlijk geregeld</h2>
-        <p class="home-text">Al jarenlang een vertrouwd adres in en rond 's-Hertogenbosch. Veel klanten komen terug voor hun volgende auto. Geen verkooppraatjes, wel een auto waar je jaren plezier van hebt.</p>
-        <a href="over-ons.html" class="home-more">Over ons <span aria-hidden="true">→</span></a>
+  <section class="usp" aria-labelledby="why-heading">
+    <div class="container">
+      <div class="section-intro">
+        <h2 id="why-heading">Waarom Altena Auto's?</h2>
       </div>
-      <ol class="home-points">
-        <li><span>01</span><div><h3>Persoonlijk advies</h3><p>We denken mee over welke auto bij jouw situatie past.</p></div></li>
-        <li><span>02</span><div><h3>Zorgvuldig geselecteerd</h3><p>Dealer onderhouden, met NAP en APK-gekeurd afgeleverd.</p></div></li>
-        <li><span>03</span><div><h3>Duidelijke informatie</h3><p>Complete specificaties en eerlijke prijzen.</p></div></li>
-        <li><span>04</span><div><h3>Inruilen mogelijk</h3><p>We nemen ook auto's, motoren, boten en caravans in. <a href="inruilen.html">Meer over inruilen</a></p></div></li>
-      </ol>
+      <ul class="usp-grid">
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 13l4-4M12 5v1M4 13h1M20 13h-1M6.3 7.3l.7.7M17.7 7.3l-.7.7"/></svg>
+          <h3>NAP-gecontroleerd</h3>
+          <p>Kilometerstanden gecontroleerd.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg>
+          <h3>Dealeronderhouden</h3>
+          <p>Aandacht voor onderhoud en historie.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="M9 13l2 2 4-4"/></svg>
+          <h3>APK bij aflevering</h3>
+          <p>Duidelijkheid over de aflevering.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+          <h3>Persoonlijke service</h3>
+          <p>Persoonlijk contact en betrokken advies.</p>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -227,12 +241,38 @@
 <script src="js/main.js"></script>
 <script>
   document.getElementById("footer-year").textContent = new Date().getFullYear();
+  (function () {
+    const hero = document.querySelector(".hero");
+    if (!hero || !("IntersectionObserver" in window)) return;
+    new IntersectionObserver(function (e) { document.body.classList.toggle("hero-in-view", e[0].isIntersecting); }, { threshold: 0.35 }).observe(hero);
+  })();
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+  function collectionCard(v) {
+    const A = AltenaVehicles, sold = v.status === "verkocht", price = A.formatPrice(v);
+    const url = "occasions/" + v.slug + "/";
+    const img = v.images && v.images.length
+      ? '<img src="' + A.assetUrl(v.images[0]) + '" alt="' + esc(v.title) + '" loading="lazy" width="640" height="480">'
+      : '<div class="media-placeholder">' + A.icons.car + '<span>Foto\'s volgen binnenkort</span></div>';
+    const specs = [[A.icons.calendar, v.year], [A.icons.gauge, A.formatMileage(v)], [A.icons.fuel, v.fuel], [A.icons.gearbox, v.transmission]]
+      .filter(s => s[1]).map(s => '<li>' + s[0] + '<span>' + esc(s[1]) + '</span></li>').join("");
+    return '<article class="c-card reveal' + (sold ? ' is-sold' : '') + '">' +
+      '<a href="' + url + '" class="c-media" tabindex="-1" aria-hidden="true">' + A.statusBadge(v) + img + '</a>' +
+      '<div class="c-body">' +
+        '<p class="c-brand">' + esc(v.brand) + '</p>' +
+        '<h3 class="c-model"><a href="' + url + '">' + esc(v.model) + '</a></h3>' +
+        '<ul class="c-specs">' + specs + '</ul>' +
+        '<div class="c-foot">' +
+          '<p class="c-price">' + (sold ? 'Verkocht' : price ? price : 'Prijs op aanvraag') + '</p>' +
+          '<a href="' + url + '" class="btn btn-primary c-btn">Bekijk occasion</a>' +
+        '</div>' +
+      '</div></article>';
+  }
   (async function () {
     const grid = document.getElementById("home-occasion-grid");
     try {
       const vehicles = await AltenaVehicles.loadVehicles();
       const featured = vehicles.filter(v => v.status !== "verkocht").slice(0, 6);
-      grid.innerHTML = (featured.length ? featured : vehicles).map(v => AltenaVehicles.occasionCardHTML(v)).join("");
+      grid.innerHTML = (featured.length ? featured : vehicles.slice(0, 6)).map(collectionCard).join("");
     } catch (e) {
       grid.innerHTML = '<p class="text-center">Voorraad kon niet worden geladen. <a href="occasions.html">Bekijk de occasionpagina</a>.</p>';
       console.error(e);
