@@ -1409,3 +1409,26 @@ h3, h4 { font-weight: 600; text-transform: none; letter-spacing: -0.005em; }
 .site-footer { border-top: 1px solid var(--aa-line); }
 .footer-col h4 { font-family: var(--font-body); font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.78rem; color: var(--aa-light); }
 .c-specs li span { white-space: normal; overflow: visible; overflow-wrap: anywhere; }
+
+/* Scroll-indicator rechtsonder in de hero */
+.scroll-cue {
+  position: absolute; z-index: 2; right: clamp(28px, 4vw, 56px); bottom: clamp(120px, 16vh, 160px);
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  color: rgba(244,243,240,0.75); transition: color .2s;
+}
+.scroll-cue:hover { color: var(--aa-white); }
+.scroll-cue-label {
+  writing-mode: vertical-rl; font-family: var(--font-body); font-weight: 600; font-size: 0.7rem;
+  letter-spacing: 0.3em; text-transform: uppercase;
+}
+.scroll-cue-line { position: relative; width: 1px; height: 72px; background: rgba(244,243,240,0.2); overflow: hidden; }
+.scroll-cue-line::after {
+  content: ""; position: absolute; left: 0; top: 0; width: 1px; height: 40%;
+  background: currentColor; animation: scroll-cue 2s cubic-bezier(.65,0,.35,1) infinite;
+}
+@keyframes scroll-cue {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(260%); }
+}
+@media (prefers-reduced-motion: reduce) { .scroll-cue-line::after { animation: none; top: 30%; } }
+@media (max-width: 640px) { .scroll-cue { right: 16px; bottom: auto; top: 26%; gap: 10px; } .scroll-cue-line { height: 56px; } }
