@@ -1220,3 +1220,7 @@ section, .section-gray, .home-why, .home-stock, .home-contact, .site-footer, .pa
   .home-points h3 { font-size: 1.1rem; }
   .home-points p, .home-text { font-size: 1rem; }
 }
+
+/* Homepagetitel voller */
+.hero h1 { font-weight: 900; -webkit-text-stroke: 0.045em currentColor; paint-order: stroke fill; letter-spacing: 0.02em; }
+@media (max-width: 640px) { .hero h1 { font-size: min(15.5vw, 4.4rem); } }
