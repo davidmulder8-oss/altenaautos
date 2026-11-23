@@ -1,12 +1,17 @@
 name: Marktplaats synchroniseren
 
+# GitHub start geplande taken in de praktijk maar om de paar uur. Daarom blijft deze taak
+# zelf ongeveer 5,5 uur doorlopen en kijkt hij elke 10 minuten op Marktplaats. Stopt hij,
+# dan staat de volgende geplande run al klaar en neemt die het meteen over.
+
 on:
   schedule:
-    - cron: "*/10 * * * *"   # elke 10 minuten (GitHub kan dit bij drukte iets uitstellen)
+    - cron: "*/10 * * * *"
   workflow_dispatch:         # handmatig starten via het tabblad Actions
 
 permissions:
   contents: write
+  actions: write             # nodig om "Site publiceren" te starten na een wijziging
 
 concurrency:
   group: marktplaats-sync
@@ -15,8 +20,11 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    outputs:
-      changed: ${{ steps.save.outputs.changed }}
+    timeout-minutes: 350
+    env:
+      GH_TOKEN: ${{ github.token }}
+      INTERVAL_SECONDS: 600     # elke 10 minuten controleren
+      RUN_SECONDS: 19800        # ongeveer 5,5 uur doorlopen
     steps:
       - uses: actions/checkout@v4
 
@@ -24,30 +32,37 @@ jobs:
         with:
           node-version: 20
 
-      - name: Voorraad van Marktplaats ophalen
-        run: node scripts/sync-marktplaats.mjs
-
-      - name: Wijzigingen opslaan
-        id: save
+      - name: Elke 10 minuten Marktplaats controleren
         run: |
           git config user.name "Altena sync"
           git config user.email "sync@users.noreply.github.com"
-          git add -A
-          if git diff --cached --quiet; then
-            echo "Niets veranderd."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            git commit -m "Voorraad bijgewerkt vanuit Marktplaats"
-            git push
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-  # Alleen als er echt iets veranderde (nieuwe auto, prijs, verkocht) wordt de site opnieuw online gezet
-  publish:
-    needs: sync
-    if: needs.sync.outputs.changed == 'true'
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    uses: ./.github/workflows/deploy.yml
+          start=$(date +%s)
+          while true; do
+            echo "::group::Controle $(date -u +%H:%M) UTC"
+            git pull --rebase --quiet || echo "Ophalen van main mislukt, probeer het straks opnieuw."
+            if node scripts/sync-marktplaats.mjs; then
+              git add -A
+              if git diff --cached --quiet; then
+                echo "Niets veranderd."
+              else
+                git commit -m "Voorraad bijgewerkt vanuit Marktplaats"
+                if git push || { git pull --rebase --quiet && git push; }; then
+                  # Pushes met de standaardtoken starten zelf geen andere taken; publiceren daarom expliciet.
+                  gh workflow run deploy.yml --ref main && echo "Site wordt opnieuw gepubliceerd."
+                else
+                  echo "Pushen mislukt, volgende controle haalt alles opnieuw op."
+                  git rebase --abort 2>/dev/null; git fetch --quiet origin main && git reset --hard --quiet origin/main
+                fi
+              fi
+            else
+              echo "Ophalen van Marktplaats mislukt, volgende controle probeert het opnieuw."
+              git checkout -- . && git clean -fdq
+            fi
+            echo "::endgroup::"
+            elapsed=$(( $(date +%s) - start ))
+            if [ $(( elapsed + INTERVAL_SECONDS )) -ge "$RUN_SECONDS" ]; then
+              echo "Klaar na $(( elapsed / 60 )) minuten; de volgende geplande run neemt het over."
+              break
+            fi
+            sleep "$INTERVAL_SECONDS"
+          done
