@@ -202,7 +202,7 @@
       "model": "Celerio",
       "version": "1.0 Comfort Airco 5 drs",
       "title": "Suzuki Celerio 1.0 Comfort Airco 5 drs",
-      "status": "beschikbaar",
+      "status": "verkocht",
       "price": 5950,
       "priceOnRequest": false,
       "year": 2015,
@@ -292,7 +292,8 @@
       ],
       "marktplaatsUrl": "https://www.marktplaats.nl/v/auto-s/suzuki/m2458771725-suzuki-celerio-1-0-comfort-airco-5-drs-74273-km-nap-bj-2015",
       "marktplaatsPhotoCount": 11,
-      "listedSince": "2026-10-27"
+      "listedSince": "2026-10-27",
+      "soldSince": "2026-11-27"
     },
     {
       "id": "m2458691567",
